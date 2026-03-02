@@ -1,0 +1,12 @@
+# Secrets
+.env
+
+# Database
+data/
+*.db
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log

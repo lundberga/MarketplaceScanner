@@ -1,0 +1,30 @@
+{
+  "name": "scanner",
+  "version": "1.0.0",
+  "description": "Hardware flip scanner — Swedish marketplace bot",
+  "main": "index.js",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "cross-env NODE_ENV=development node index.js",
+    "db:init": "node src/db/init.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^12.6.2",
+    "cheerio": "^1.2.0",
+    "discord.js": "^14.25.1",
+    "dotenv": "^17.3.1",
+    "node-cron": "^4.2.1",
+    "pino": "^10.3.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "pino-pretty": "^13.1.3"
+  }
+}
