@@ -7,7 +7,7 @@
 
 ### Scraping
 
-- [ ] **SCRP-01**: Bot scrapes Blocket for GPU, CPU, RAM, and Storage listings matching search keywords
+- [x] **SCRP-01**: Bot scrapes Blocket for GPU, CPU, RAM, and Storage listings matching search keywords
 - [x] **SCRP-02**: Bot scrapes Tradera for GPU, CPU, RAM, and Storage listings (buy-now and ending-soon auctions)
 - [ ] **SCRP-03**: Bot scrapes Vinted for GPU, CPU, RAM, and Storage listings
 - [ ] **SCRP-04**: Bot scrapes Sweclockers marketplace (köp/sälj) for GPU, CPU, RAM, and Storage listings
@@ -78,7 +78,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SCRP-01 | Phase 3 | Pending |
+| SCRP-01 | Phase 3 | Complete |
 | SCRP-02 | Phase 2 | Complete |
 | SCRP-03 | Phase 5 | Pending |
 | SCRP-04 | Phase 5 | Pending |
