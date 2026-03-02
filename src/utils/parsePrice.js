@@ -12,7 +12,8 @@ function parsePrice(raw) {
   let cleaned = raw
     .replace(/kr\/st/gi, '')       // remove "kr/st" unit prefix before stripping "kr"
     .replace(/kr|SEK|:-/gi, '')    // remove currency suffixes
-    .replace(/,\d{2}/, '')         // strip decimal: "2500,00" → "2500"
+    .replace(/,\d{2}(?!\d)/, '')   // strip decimal: "2500,00" → "2500" (only 2-digit decimals, not comma-thousands like "11,500")
+    .replace(/,/g, '')             // strip remaining comma thousands separators (e.g. "11,500" → "11500")
     .replace(/\./g, '')            // strip period thousands separator
     .replace(/\s/g, '');           // strip all whitespace (Swedish thousands sep is space)
   const match = cleaned.match(/(\d+)/);
