@@ -13,7 +13,7 @@ Nine phases deliver a single-process Node.js bot that monitors Swedish secondhan
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - SQLite schema, project structure, logging, dotenv, .gitignore
-- [ ] **Phase 2: Tradera Scraper** - Tradera active listing scraper + sold-comps cache + deduplication pipeline
+- [x] **Phase 2: Tradera Scraper** - Tradera active listing scraper + sold-comps cache + deduplication pipeline (completed 2026-03-02)
 - [ ] **Phase 3: Blocket Scraper** - Blocket `__NEXT_DATA__` HTML parser with canary checks
 - [ ] **Phase 4: Scheduler** - node-cron polling loop with pause state, p-queue rate limiting, scan logging
 - [ ] **Phase 5: Vinted and Sweclockers Scrapers** - Two lower-priority marketplace scrapers added to the proven pipeline
@@ -166,7 +166,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete    | 2026-03-02 |
-| 2. Tradera Scraper | 2/3 | In Progress|  |
+| 2. Tradera Scraper | 3/3 | Complete   | 2026-03-02 |
 | 3. Blocket Scraper | 0/1 | Not started | - |
 | 4. Scheduler | 0/1 | Not started | - |
 | 5. Vinted and Sweclockers Scrapers | 0/2 | Not started | - |
