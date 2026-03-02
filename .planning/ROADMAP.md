@@ -48,12 +48,12 @@ Plans:
   2. Running the scraper twice in a row produces zero duplicate listing IDs in the second run's output (deduplication is working)
   3. On cold-start seed mode, all current Tradera listing IDs are written to seen_listings and no alert is emitted for any of them
   4. Tradera sold-price lookup for a hardware term (e.g. "rtx 3080") returns a median sold price from recent completed listings, or gracefully returns null if sold data is unavailable without crashing
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: TraderaScraper (active listings) — IScraper interface, Listing schema, cheerio HTML parsing
-- [ ] 02-02: Deduplication pipeline — seen_listings table writes, seed mode, composite key logic
-- [ ] 02-03: TraderaSoldCache — sold-comps HTTP fetch, 4-hour SQLite cache, median calculation
+- [ ] 02-01-PLAN.md — IScraper interface + Listing schema, Swedish price parser, TraderaScraper (active listings, cheerio HTML parsing)
+- [ ] 02-02-PLAN.md — Deduplication DB wrapper (seenListings.js), seed mode runner (traderaRunner.js), filterAndMarkSeen with INSERT OR IGNORE
+- [ ] 02-03-PLAN.md — TraderaSoldCache: sold-comps HTTP fetch (itemStatus=Ended), 4-hour SQLite cache, median calculation with MIN_SAMPLES guard
 
 ### Phase 3: Blocket Scraper
 **Goal**: The bot can scrape Blocket for hardware listings by parsing the `__NEXT_DATA__` JSON blob, plugging into the existing deduplication and Listing schema without any changes to Phase 2 code
