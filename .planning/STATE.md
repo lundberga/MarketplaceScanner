@@ -10,27 +10,27 @@ See: .planning/PROJECT.md (updated 2026-03-02)
 ## Current Position
 
 Phase: 1 of 9 (Foundation)
-Plan: 0 of 2 in current phase
-Status: Ready to plan
-Last activity: 2026-03-02 — Roadmap created, all 20 v1 requirements mapped to 9 phases
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-03-02 — Plan 01-01 complete: npm bootstrap, pino logger, .gitignore, .env.example
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 5%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: -
-- Total execution time: 0 hours
+- Total plans completed: 1
+- Average duration: 2 min
+- Total execution time: 0.03 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-foundation | 1 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: none yet
+- Last 5 plans: 01-01 (2 min)
 - Trend: -
 
 *Updated after each plan completion*
@@ -45,6 +45,9 @@ Recent decisions affecting current work:
 - [Roadmap]: Node.js chosen over Python — discord.js 14 is dominant, single-language avoids orchestration overhead
 - [Roadmap]: Tradera scraped before Blocket — API is more stable, proves Listing schema and dedup before fragile HTML parsing
 - [Roadmap]: Vinted and Sweclockers deferred to Phase 5 — isolates highest-maintenance scrapers from core pipeline
+- [01-01]: CommonJS throughout (no type:module) — discord.js 14 and better-sqlite3 work cleanly with require(); p-queue ESM deferred to Phase 4 dynamic import()
+- [01-01]: pino selected as logger — structured JSON, production-ready, pino-pretty for dev
+- [01-01]: dotenv.config() placed as absolute first statement in index.js before any other require
 
 ### Pending Todos
 
@@ -59,5 +62,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-02
-Stopped at: Roadmap written, STATE.md and REQUIREMENTS.md traceability initialized
+Stopped at: Completed 01-01-PLAN.md — npm bootstrap, pino logger, .gitignore, .env.example all committed
 Resume file: None

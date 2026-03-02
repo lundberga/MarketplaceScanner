@@ -88,7 +88,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DEUP-01 | Phase 1 | Pending |
 | DEUP-02 | Phase 1 | Pending |
 | DEUP-03 | Phase 2 | Pending |
-| DEUP-04 | Phase 1 | Pending |
+| DEUP-04 | Phase 1 | In Progress (01-01 bootstrapped project; 01-02 adds SQLite tables) |
 | ALRT-01 | Phase 7 | Pending |
 | ALRT-02 | Phase 7 | Pending |
 | ALRT-03 | Phase 7 | Pending |
@@ -106,4 +106,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-02*
-*Last updated: 2026-03-02 after roadmap creation — all 20 requirements mapped*
+*Last updated: 2026-03-02 after 01-01 execution — DEUP-04 in progress (project scaffolding complete, SQLite tables in 01-02)*

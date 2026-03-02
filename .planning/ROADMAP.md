@@ -36,7 +36,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project scaffold, npm dependencies, .gitignore, .env.example, pino logger
+- [x] 01-01-PLAN.md — Project scaffold, npm dependencies, .gitignore, .env.example, pino logger
 - [ ] 01-02-PLAN.md — SQLite schema (all 5 tables, WAL mode, absolute path) and singleton DB wrapper
 
 ### Phase 2: Tradera Scraper
@@ -165,7 +165,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/2 | Not started | - |
+| 1. Foundation | 1/2 | In progress | - |
 | 2. Tradera Scraper | 0/3 | Not started | - |
 | 3. Blocket Scraper | 0/1 | Not started | - |
 | 4. Scheduler | 0/1 | Not started | - |
