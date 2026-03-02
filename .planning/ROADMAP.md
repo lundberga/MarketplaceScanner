@@ -33,11 +33,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. The SQLite file persists across process restarts and retains all rows written in a previous session
   3. A `.env.example` file exists and `.gitignore` excludes `.env`, the SQLite file, and `node_modules` — no secrets can be accidentally committed
   4. Structured pino logs appear in the terminal when any module runs
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: Project scaffold, dependencies, .env/.gitignore setup
-- [ ] 01-02: SQLite schema (all tables, WAL mode, absolute path) and DB wrapper
+- [ ] 01-01-PLAN.md — Project scaffold, npm dependencies, .gitignore, .env.example, pino logger
+- [ ] 01-02-PLAN.md — SQLite schema (all 5 tables, WAL mode, absolute path) and singleton DB wrapper
 
 ### Phase 2: Tradera Scraper
 **Goal**: The bot can fetch active Tradera listings for hardware keywords, normalize them to the shared Listing schema, persist seen listing IDs to SQLite, and populate the seen-ID store on cold start without sending any alerts
