@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-02T15:22:02.402Z"
+last_updated: "2026-03-02T15:47:37.611Z"
 progress:
-  total_phases: 2
-  completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
+  total_phases: 3
+  completed_phases: 3
+  total_plans: 6
+  completed_plans: 6
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-02)
 
 **Core value:** Surface flip-worthy hardware deals the moment they appear — before anyone else buys them.
-**Current focus:** Phase 2 — Tradera Scraper
+**Current focus:** Phase 3 — Blocket Scraper
 
 ## Current Position
 
-Phase: 2 of 9 (Tradera Scraper)
-Plan: 3 of 3 in current phase — PHASE COMPLETE
+Phase: 3 of 9 (Blocket Scraper)
+Plan: 1 of 1 in current phase — PHASE COMPLETE
 Status: In progress
-Last activity: 2026-03-02 — Plan 02-03 complete: soldCache with 4-hour SQLite cache and median calculation (8/8 tests)
+Last activity: 2026-03-02 — Plan 03-01 complete: BlocketScraper with cheerio sf-search-ad-link selector, canary check, seed runner (4/4 tests)
 
-Progress: [█████░░░░░] 25%
+Progress: [████████░░] 33%
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Progress: [█████░░░░░] 25%
 *Updated after each plan completion*
 | Phase 02-tradera-scraper P02 | 4 | 2 tasks | 3 files |
 | Phase 02-tradera-scraper P03 | 3 | 1 tasks | 2 files |
+| Phase 03-blocket-scraper P01 | 8 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,9 @@ Recent decisions affecting current work:
 - [Phase 02-02]: db.transaction wraps all novel inserts atomically for consistent partial-batch failure handling
 - [Phase 02-03]: Swedish thousand-separator regex used in _parseSoldPrices to avoid capturing model numbers as prices
 - [Phase 02-03]: Cache write skipped when sampleCount < MIN_SAMPLES=3 to avoid caching stale insufficient-data entries
+- [Phase 03-01]: Blocket uses SSR HTML with a.sf-search-ad-link selector — no __NEXT_DATA__ parsing required; price from div.font-bold span within closest article
+- [Phase 03-01]: Canary check guards deduped.length (post-dedup) not allListings.length to avoid false negatives from duplicate keywords
+- [Phase 03-01]: Async test wrapper used in blocket.test.js to prevent promise timing race in assert-based test runner
 
 ### Pending Todos
 
@@ -83,11 +87,11 @@ None yet.
 ### Blockers/Concerns
 
 - [Phase 2]: Tradera sold-listing URL filter must be verified on the live site before coding the market-value path — if auth is required, sold-comps need an alternative source
-- [Phase 3]: Blocket `__NEXT_DATA__` key name and listing object structure must be inspected from a live page before writing the parser
+- [Phase 3]: Blocket `__NEXT_DATA__` blocker resolved — SSR HTML approach with sf-search-ad-link selector used instead (no JSON parsing needed)
 - [Phase 5]: Vinted Cloudflare behavior may require Playwright as a fallback — assess at Phase 5 kickoff
 
 ## Session Continuity
 
 Last session: 2026-03-02
-Stopped at: Completed 02-03-PLAN.md — soldCache with 4-hour SQLite cache and median calculation (8/8 tests)
+Stopped at: Completed 03-01-PLAN.md — BlocketScraper with cheerio sf-search-ad-link selector, canary check, seed runner (4/4 tests)
 Resume file: None

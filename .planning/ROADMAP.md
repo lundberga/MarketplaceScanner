@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - SQLite schema, project structure, logging, dotenv, .gitignore
 - [x] **Phase 2: Tradera Scraper** - Tradera active listing scraper + sold-comps cache + deduplication pipeline (completed 2026-03-02)
-- [ ] **Phase 3: Blocket Scraper** - Blocket `__NEXT_DATA__` HTML parser with canary checks
+- [x] **Phase 3: Blocket Scraper** - Blocket SSR HTML cheerio parser with canary checks (no __NEXT_DATA__) (completed 2026-03-02)
 - [ ] **Phase 4: Scheduler** - node-cron polling loop with pause state, p-queue rate limiting, scan logging
 - [ ] **Phase 5: Vinted and Sweclockers Scrapers** - Two lower-priority marketplace scrapers added to the proven pipeline
 - [ ] **Phase 6: Deal Detection Engine** - Threshold matching + Tradera sold-comps integration + auction filter
@@ -56,17 +56,17 @@ Plans:
 - [ ] 02-03-PLAN.md — TraderaSoldCache: sold-comps HTTP fetch (itemStatus=Ended), 4-hour SQLite cache, median calculation with MIN_SAMPLES guard
 
 ### Phase 3: Blocket Scraper
-**Goal**: The bot can scrape Blocket for hardware listings by parsing the `__NEXT_DATA__` JSON blob, plugging into the existing deduplication and Listing schema without any changes to Phase 2 code
+**Goal**: The bot can scrape Blocket for hardware listings by parsing SSR HTML with cheerio selectors, plugging into the existing deduplication and Listing schema without any changes to Phase 2 code
 **Depends on**: Phase 2
 **Requirements**: SCRP-01
 **Success Criteria** (what must be TRUE):
   1. Running the Blocket scraper for a hardware keyword returns a non-empty array of Listing objects in the same schema as Tradera output
   2. A canary check fires after every Blocket scrape cycle and logs a warning if result count is zero (indicating a page structure change)
   3. Blocket listing IDs feed into the same seen_listings deduplication table used by Tradera — no separate store
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 03-01: BlocketScraper — live `__NEXT_DATA__` structure inspection, cheerio parser, canary check
+- [ ] 03-01-PLAN.md — BlocketScraper: cheerio selectors (NOT __NEXT_DATA__), canary check, seed-mode runner, IScraper interface
 
 ### Phase 4: Scheduler
 **Goal**: The bot runs autonomously, polling all enabled marketplaces on a configurable interval, reading pause state from the database, logging each cycle, and never overlapping concurrent scan cycles
@@ -167,7 +167,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete    | 2026-03-02 |
 | 2. Tradera Scraper | 3/3 | Complete    | 2026-03-02 |
-| 3. Blocket Scraper | 0/1 | Not started | - |
+| 3. Blocket Scraper | 1/1 | Complete   | 2026-03-02 |
 | 4. Scheduler | 0/1 | Not started | - |
 | 5. Vinted and Sweclockers Scrapers | 0/2 | Not started | - |
 | 6. Deal Detection Engine | 0/3 | Not started | - |
