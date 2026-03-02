@@ -22,7 +22,7 @@
 
 - [x] **DEUP-01**: Bot tracks all seen listing IDs in SQLite to prevent duplicate alerts across scan cycles
 - [x] **DEUP-02**: Bot survives Windows process restarts without re-alerting on previously seen listings
-- [ ] **DEUP-03**: Bot performs a seed-mode scan on cold start — populates seen-IDs from current listings without sending alerts
+- [x] **DEUP-03**: Bot performs a seed-mode scan on cold start — populates seen-IDs from current listings without sending alerts
 - [x] **DEUP-04**: Bot stores price thresholds, marketplace pause states, and dismissed deal IDs in SQLite
 
 ### Discord Alerts
@@ -87,7 +87,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DEAL-03 | Phase 6 | Pending |
 | DEUP-01 | Phase 1 | Complete (01-02: seen_listings table with composite key) |
 | DEUP-02 | Phase 1 | Complete (01-02: data/scanner.db persists across restarts, WAL mode) |
-| DEUP-03 | Phase 2 | Pending |
+| DEUP-03 | Phase 2 | Complete |
 | DEUP-04 | Phase 1 | Complete (01-02: thresholds, user_config tables in SQLite) |
 | ALRT-01 | Phase 7 | Pending |
 | ALRT-02 | Phase 7 | Pending |

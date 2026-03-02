@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-02T15:14:24.761Z"
+last_updated: "2026-03-02T15:17:49.478Z"
 progress:
   total_phases: 2
   completed_phases: 1
   total_plans: 5
-  completed_plans: 3
+  completed_plans: 4
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-03-02)
 ## Current Position
 
 Phase: 2 of 9 (Tradera Scraper)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-03-02 — Plan 02-01 complete: IScraper interface, parsePrice utility (9/9 tests), TraderaScraper with cheerio
+Last activity: 2026-03-02 — Plan 02-02 complete: seenListings dedup layer (7/7 tests), traderaRunner with seed mode
 
-Progress: [███░░░░░░░] 15%
+Progress: [████░░░░░░] 20%
 
 ## Performance Metrics
 
@@ -41,13 +41,14 @@ Progress: [███░░░░░░░] 15%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 2 | 3 min | 1.5 min |
-| 02-tradera-scraper | 1 | 10 min | 10 min |
+| 02-tradera-scraper | 2 | 14 min | 7 min |
 
 **Recent Trend:**
 - Last 5 plans: 01-01 (2 min), 01-02 (1 min), 02-01 (10 min)
 - Trend: -
 
 *Updated after each plan completion*
+| Phase 02-tradera-scraper P02 | 4 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -69,6 +70,8 @@ Recent decisions affecting current work:
 - [Phase 02-01]: Tradera href regex fixed to not require trailing slash — URLs use /item/{catId}/{listingId}/{title-slug} format
 - [Phase 02-01]: Dedup moved after kr-text check so empty image anchors do not consume listing ID slots
 - [Phase 02-01]: parsePrice comma fix: comma-decimal vs comma-thousands distinguished via lookahead
+- [Phase 02-02]: INSERT OR IGNORE used instead of upsert to avoid overwriting first_seen timestamp on re-insert
+- [Phase 02-02]: db.transaction wraps all novel inserts atomically for consistent partial-batch failure handling
 
 ### Pending Todos
 
@@ -83,5 +86,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-02
-Stopped at: Completed 02-01-PLAN.md — IScraper interface, parsePrice utility (9/9 tests), TraderaScraper with cheerio HTML parsing
+Stopped at: Completed 02-02-PLAN.md — seenListings dedup layer and traderaRunner with seed mode
 Resume file: None
