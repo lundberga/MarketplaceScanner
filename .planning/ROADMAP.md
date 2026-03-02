@@ -12,7 +12,7 @@ Nine phases deliver a single-process Node.js bot that monitors Swedish secondhan
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - SQLite schema, project structure, logging, dotenv, .gitignore
+- [x] **Phase 1: Foundation** - SQLite schema, project structure, logging, dotenv, .gitignore
 - [ ] **Phase 2: Tradera Scraper** - Tradera active listing scraper + sold-comps cache + deduplication pipeline
 - [ ] **Phase 3: Blocket Scraper** - Blocket `__NEXT_DATA__` HTML parser with canary checks
 - [ ] **Phase 4: Scheduler** - node-cron polling loop with pause state, p-queue rate limiting, scan logging
@@ -37,7 +37,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md — Project scaffold, npm dependencies, .gitignore, .env.example, pino logger
-- [ ] 01-02-PLAN.md — SQLite schema (all 5 tables, WAL mode, absolute path) and singleton DB wrapper
+- [x] 01-02-PLAN.md — SQLite schema (all 5 tables, WAL mode, absolute path) and singleton DB wrapper
 
 ### Phase 2: Tradera Scraper
 **Goal**: The bot can fetch active Tradera listings for hardware keywords, normalize them to the shared Listing schema, persist seen listing IDs to SQLite, and populate the seen-ID store on cold start without sending any alerts
@@ -165,7 +165,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 1/2 | In progress | - |
+| 1. Foundation | 2/2 | Complete | 2026-03-02 |
 | 2. Tradera Scraper | 0/3 | Not started | - |
 | 3. Blocket Scraper | 0/1 | Not started | - |
 | 4. Scheduler | 0/1 | Not started | - |

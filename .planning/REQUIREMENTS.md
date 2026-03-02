@@ -20,10 +20,10 @@
 
 ### Deduplication & Persistence
 
-- [ ] **DEUP-01**: Bot tracks all seen listing IDs in SQLite to prevent duplicate alerts across scan cycles
-- [ ] **DEUP-02**: Bot survives Windows process restarts without re-alerting on previously seen listings
+- [x] **DEUP-01**: Bot tracks all seen listing IDs in SQLite to prevent duplicate alerts across scan cycles
+- [x] **DEUP-02**: Bot survives Windows process restarts without re-alerting on previously seen listings
 - [ ] **DEUP-03**: Bot performs a seed-mode scan on cold start — populates seen-IDs from current listings without sending alerts
-- [ ] **DEUP-04**: Bot stores price thresholds, marketplace pause states, and dismissed deal IDs in SQLite
+- [x] **DEUP-04**: Bot stores price thresholds, marketplace pause states, and dismissed deal IDs in SQLite
 
 ### Discord Alerts
 
@@ -85,10 +85,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DEAL-01 | Phase 6 | Pending |
 | DEAL-02 | Phase 6 | Pending |
 | DEAL-03 | Phase 6 | Pending |
-| DEUP-01 | Phase 1 | Pending |
-| DEUP-02 | Phase 1 | Pending |
+| DEUP-01 | Phase 1 | Complete (01-02: seen_listings table with composite key) |
+| DEUP-02 | Phase 1 | Complete (01-02: data/scanner.db persists across restarts, WAL mode) |
 | DEUP-03 | Phase 2 | Pending |
-| DEUP-04 | Phase 1 | In Progress (01-01 bootstrapped project; 01-02 adds SQLite tables) |
+| DEUP-04 | Phase 1 | Complete (01-02: thresholds, user_config tables in SQLite) |
 | ALRT-01 | Phase 7 | Pending |
 | ALRT-02 | Phase 7 | Pending |
 | ALRT-03 | Phase 7 | Pending |
@@ -106,4 +106,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-02*
-*Last updated: 2026-03-02 after 01-01 execution — DEUP-04 in progress (project scaffolding complete, SQLite tables in 01-02)*
+*Last updated: 2026-03-02 after 01-02 execution — DEUP-01, DEUP-02, DEUP-04 complete (SQLite schema with all 5 tables, WAL mode, absolute path)*
