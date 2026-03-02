@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-02T10:28:18.630Z"
+last_updated: "2026-03-02T15:14:24.761Z"
 progress:
-  total_phases: 1
+  total_phases: 2
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 5
+  completed_plans: 3
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-02)
 
 **Core value:** Surface flip-worthy hardware deals the moment they appear — before anyone else buys them.
-**Current focus:** Phase 1 — Foundation
+**Current focus:** Phase 2 — Tradera Scraper
 
 ## Current Position
 
-Phase: 1 of 9 (Foundation)
-Plan: 2 of 2 in current phase
+Phase: 2 of 9 (Tradera Scraper)
+Plan: 1 of 3 in current phase
 Status: In progress
-Last activity: 2026-03-02 — Plan 01-02 complete: SQLite schema, WAL mode, 5 tables, singleton DB export
+Last activity: 2026-03-02 — Plan 02-01 complete: IScraper interface, parsePrice utility (9/9 tests), TraderaScraper with cheerio
 
-Progress: [██░░░░░░░░] 10%
+Progress: [███░░░░░░░] 15%
 
 ## Performance Metrics
 
@@ -41,9 +41,10 @@ Progress: [██░░░░░░░░] 10%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 2 | 3 min | 1.5 min |
+| 02-tradera-scraper | 1 | 10 min | 10 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2 min), 01-02 (1 min)
+- Last 5 plans: 01-01 (2 min), 01-02 (1 min), 02-01 (10 min)
 - Trend: -
 
 *Updated after each plan completion*
@@ -65,6 +66,9 @@ Recent decisions affecting current work:
 - [01-02]: Absolute DB_PATH via path.resolve(__dirname, ...) — prevents SQLITE_CANTOPEN under pm2 or Task Scheduler CWD changes
 - [01-02]: fs.mkdirSync with recursive: true guards data/ creation — better-sqlite3 does not create parent directories
 - [01-02]: initDb() returns db handle — enables singleton in index.js and testability without global state
+- [Phase 02-01]: Tradera href regex fixed to not require trailing slash — URLs use /item/{catId}/{listingId}/{title-slug} format
+- [Phase 02-01]: Dedup moved after kr-text check so empty image anchors do not consume listing ID slots
+- [Phase 02-01]: parsePrice comma fix: comma-decimal vs comma-thousands distinguished via lookahead
 
 ### Pending Todos
 
@@ -79,5 +83,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-02
-Stopped at: Completed 01-02-PLAN.md — SQLite schema, WAL mode, 5 tables, singleton DB export all committed
+Stopped at: Completed 02-01-PLAN.md — IScraper interface, parsePrice utility (9/9 tests), TraderaScraper with cheerio HTML parsing
 Resume file: None
