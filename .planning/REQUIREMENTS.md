@@ -78,32 +78,32 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SCRP-01 | Phase ? | Pending |
-| SCRP-02 | Phase ? | Pending |
-| SCRP-03 | Phase ? | Pending |
-| SCRP-04 | Phase ? | Pending |
-| DEAL-01 | Phase ? | Pending |
-| DEAL-02 | Phase ? | Pending |
-| DEAL-03 | Phase ? | Pending |
-| DEUP-01 | Phase ? | Pending |
-| DEUP-02 | Phase ? | Pending |
-| DEUP-03 | Phase ? | Pending |
-| DEUP-04 | Phase ? | Pending |
-| ALRT-01 | Phase ? | Pending |
-| ALRT-02 | Phase ? | Pending |
-| ALRT-03 | Phase ? | Pending |
-| CMND-01 | Phase ? | Pending |
-| CMND-02 | Phase ? | Pending |
-| CMND-03 | Phase ? | Pending |
-| CMND-04 | Phase ? | Pending |
-| SCHD-01 | Phase ? | Pending |
-| SCHD-02 | Phase ? | Pending |
+| SCRP-01 | Phase 3 | Pending |
+| SCRP-02 | Phase 2 | Pending |
+| SCRP-03 | Phase 5 | Pending |
+| SCRP-04 | Phase 5 | Pending |
+| DEAL-01 | Phase 6 | Pending |
+| DEAL-02 | Phase 6 | Pending |
+| DEAL-03 | Phase 6 | Pending |
+| DEUP-01 | Phase 1 | Pending |
+| DEUP-02 | Phase 1 | Pending |
+| DEUP-03 | Phase 2 | Pending |
+| DEUP-04 | Phase 1 | Pending |
+| ALRT-01 | Phase 7 | Pending |
+| ALRT-02 | Phase 7 | Pending |
+| ALRT-03 | Phase 7 | Pending |
+| CMND-01 | Phase 8 | Pending |
+| CMND-02 | Phase 8 | Pending |
+| CMND-03 | Phase 8 | Pending |
+| CMND-04 | Phase 8 | Pending |
+| SCHD-01 | Phase 4 | Pending |
+| SCHD-02 | Phase 9 | Pending |
 
 **Coverage:**
 - v1 requirements: 20 total
-- Mapped to phases: 0
-- Unmapped: 20 ⚠️
+- Mapped to phases: 20
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-02*
-*Last updated: 2026-03-02 after initial definition*
+*Last updated: 2026-03-02 after roadmap creation — all 20 requirements mapped*
