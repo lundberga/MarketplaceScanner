@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-02T15:52:36.989Z"
+last_updated: "2026-03-02T17:32:00.000Z"
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
+  total_phases: 9
+  completed_phases: 4
+  total_plans: 7
+  completed_plans: 7
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-02)
 
 **Core value:** Surface flip-worthy hardware deals the moment they appear — before anyone else buys them.
-**Current focus:** Phase 3 — Blocket Scraper
+**Current focus:** Phase 5 — Vinted and Sweclockers Scrapers
 
 ## Current Position
 
-Phase: 3 of 9 (Blocket Scraper)
-Plan: 1 of 1 in current phase — PHASE COMPLETE
-Status: In progress
-Last activity: 2026-03-02 — Plan 03-01 complete: BlocketScraper with cheerio sf-search-ad-link selector, canary check, seed runner (4/4 tests)
+Phase: 4 of 9 (Scheduler) — PHASE COMPLETE
+Plan: 1 of 1 in current phase — COMPLETE
+Status: Phase 4 complete; next is Phase 5
+Last activity: 2026-03-02 — Plan 04-01 complete: scheduler bootstrap (runCycle, noOverlap cron, immediate task.execute(), scan_log writes, live pause from user_config)
 
-Progress: [████████░░] 33%
+Progress: [████████████░░░░░░░░] 44%
 
 ## Performance Metrics
 
@@ -79,6 +79,9 @@ Recent decisions affecting current work:
 - [Phase 03-01]: Blocket uses SSR HTML with a.sf-search-ad-link selector — no __NEXT_DATA__ parsing required; price from div.font-bold span within closest article
 - [Phase 03-01]: Canary check guards deduped.length (post-dedup) not allListings.length to avoid false negatives from duplicate keywords
 - [Phase 03-01]: Async test wrapper used in blocket.test.js to prevent promise timing race in assert-based test runner
+- [Phase 04-01]: noOverlap: true (node-cron v4 built-in) used for cycle sequencing instead of p-queue (p-queue is ESM-only, throws ERR_REQUIRE_ESM from CJS)
+- [Phase 04-01]: task.execute() fires first cycle immediately on startup (v4 API; runOnInit was removed in v4)
+- [Phase 04-01]: scan_log listings_found = new_listings = novel.length in Phase 4 — total-before-dedup not available until Phase 6
 
 ### Pending Todos
 
@@ -93,5 +96,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-02
-Stopped at: Completed 03-01-PLAN.md — BlocketScraper with cheerio sf-search-ad-link selector, canary check, seed runner (4/4 tests)
+Stopped at: Completed 04-01-PLAN.md — scheduler bootstrap: runCycle, noOverlap cron, immediate task.execute(), scan_log per-marketplace, live pause from user_config
 Resume file: None
