@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-03T09:40:00.160Z"
+last_updated: "2026-03-03T10:03:34.634Z"
 progress:
-  total_phases: 5
+  total_phases: 6
   completed_phases: 5
-  total_plans: 10
-  completed_plans: 10
+  total_plans: 13
+  completed_plans: 11
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-02)
 
 **Core value:** Surface flip-worthy hardware deals the moment they appear — before anyone else buys them.
-**Current focus:** Phase 5 — Vinted and Sweclockers Scrapers
+**Current focus:** Phase 6 — Deal Detection Engine
 
 ## Current Position
 
-Phase: 5 of 9 (Vinted and Sweclockers Scrapers) — COMPLETE
-Plan: 3 of 3 in current phase — COMPLETE (all three plans done)
-Status: Phase 5 complete — all four scrapers (tradera, blocket, vinted, sweclockers) registered and human-verified
-Last activity: 2026-03-03 — Plan 05-03 complete: index.js wired with all four scrapers; startup log human-verified
+Phase: 6 of 9 (Deal Detection Engine) — IN PROGRESS
+Plan: 1 of 3 in current phase — COMPLETE (parseAuctionEnd utility done)
+Status: Plan 06-01 complete — parseAuctionEnd + passesAuctionFilter utility with 11 tests passing
+Last activity: 2026-03-03 — Plan 06-01 complete: Swedish auction-end parser and 2-hour filter implemented
 
-Progress: [████████████████████] 100%
+Progress: [█████████████████░░░] 85%
 
 ## Performance Metrics
 
@@ -54,6 +54,7 @@ Progress: [████████████████████] 100%
 | Phase 05-vinted-and-sweclockers-scrapers P01 | 2 | 2 tasks | 2 files |
 | Phase 05-vinted-and-sweclockers-scrapers P02 | 2 | 2 tasks | 2 files |
 | Phase 05-vinted-and-sweclockers-scrapers P03 | 5 | 2 tasks | 1 files |
+| Phase 06-deal-detection-engine P01 | 3 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -91,6 +92,8 @@ Recent decisions affecting current work:
 - [Phase 05-01]: Session cookie uses dual-fallback: res.headers.get('set-cookie') first, then getSetCookie()[0] for undici compatibility
 - [Phase 05-01]: No smoke-test block in vintedRunner.js — scheduler integration (05-03) handles integration testing
 - [Phase 05-03]: No runCycle.js changes needed — existing per-scraper try/catch and pause-state lookup handle new scrapers by name automatically
+- [Phase 06-deal-detection-engine]: nowMs parameter injected into parseAuctionEnd and passesAuctionFilter for deterministic testing — avoids Date.now() non-determinism
+- [Phase 06-deal-detection-engine]: Year-boundary fix: candidate incremented to next year when it falls >60s in the past — handles January dates parsed in December
 
 ### Pending Todos
 
@@ -105,5 +108,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-03
-Stopped at: Completed 05-03-PLAN.md — four-scraper pipeline (tradera, blocket, vinted, sweclockers) registered in index.js and human-verified
+Stopped at: Completed 06-01-PLAN.md — parseAuctionEnd + passesAuctionFilter utility with 11 unit tests passing
 Resume file: None
