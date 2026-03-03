@@ -44,14 +44,17 @@ async function runTests() {
     assert.strictEqual(d.getMinutes(), 0, 'minute should be 0');
   });
 
-  syncTest('parseAuctionEnd("31 december 23:50") called in January returns timestamp in next year', () => {
-    // nowMs is in January 2026
+  syncTest('parseAuctionEnd("31 december 23:50") called in January returns timestamp for December of current year (year-boundary)', () => {
+    // nowMs is in January 2026 (month 0). December (month 11) is later in the year,
+    // so candidate = Dec 31 2026 — it is in the future (not past), no year bump needed.
+    // The year-boundary fix (bump when candidate is in the past) correctly leaves this as 2026.
+    // passesAuctionFilter will return false since Dec 31 is > 2 hours away.
     const nowMs = new Date(2026, 0, 5, 12, 0, 0, 0).getTime(); // 2026-01-05 12:00
     const result = parseAuctionEnd('31 december 23:50', nowMs);
     assert.strictEqual(typeof result, 'number', 'should return a number');
     const d = new Date(result);
-    // December 31 is before January 5 in the year, so must be next year
-    assert.strictEqual(d.getFullYear(), 2027, 'year should be 2027 (next year boundary)');
+    // December 31 of the current year (2026) — still in the future from Jan 5
+    assert.strictEqual(d.getFullYear(), 2026, 'year should be 2026 (next occurrence of Dec 31 from Jan)');
     assert.strictEqual(d.getMonth(), 11, 'month index should be 11 (december)');
     assert.strictEqual(d.getDate(), 31, 'day should be 31');
     assert.strictEqual(d.getHours(), 23, 'hour should be 23');
