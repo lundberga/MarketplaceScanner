@@ -16,9 +16,12 @@ const { detectDeals } = require('../deals/detectDeals');
  *   Array of scraper descriptors. Each has a name (e.g. 'tradera') and a run(keywords) async fn.
  * @param {string[]} keywords - Search keywords passed to every scraper
  * @param {import('better-sqlite3').Database} db - The open SQLite database instance
+ * @param {{ enqueue: function }|null} [alertSender]
+ *   Optional Discord alert sender. If provided, detected alerts are enqueued for posting.
+ *   Pass null to disable Discord (tests, seed mode). enqueue() is fire-and-forget.
  * @returns {Promise<void>}
  */
-async function runCycle(scrapers, keywords, db) {
+async function runCycle(scrapers, keywords, db, alertSender) {
   logger.info({ scrapers: scrapers.map(s => s.name) }, 'Cycle started');
 
   const stmtGetConfig = db.prepare('SELECT value FROM user_config WHERE key = ?');
@@ -54,6 +57,9 @@ async function runCycle(scrapers, keywords, db) {
         listingsFound = novel.length;
         const alerts = await detectDeals(novel, db);
         dealsAlerted = alerts.length;
+        if (alertSender) {
+          alertSender.enqueue(alerts);  // fire-and-forget
+        }
         logger.info({ marketplace: scraper.name, novel: novel.length }, 'Scraper complete');
       } catch (err) {
         completedAt = Math.floor(Date.now() / 1000);
