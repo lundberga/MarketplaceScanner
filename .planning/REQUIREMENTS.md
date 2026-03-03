@@ -27,9 +27,9 @@
 
 ### Discord Alerts
 
-- [ ] **ALRT-01**: Bot posts a rich Discord embed with listing title and direct link to the marketplace listing
-- [ ] **ALRT-02**: Bot includes listed price and estimated profit margin (derived from Tradera sold comps) in the embed
-- [ ] **ALRT-03**: Bot includes marketplace source (Blocket / Tradera / Vinted / Sweclockers) and hardware category (GPU / CPU / RAM / Storage) in the embed
+- [x] **ALRT-01**: Bot posts a rich Discord embed with listing title and direct link to the marketplace listing
+- [x] **ALRT-02**: Bot includes listed price and estimated profit margin (derived from Tradera sold comps) in the embed
+- [x] **ALRT-03**: Bot includes marketplace source (Blocket / Tradera / Vinted / Sweclockers) and hardware category (GPU / CPU / RAM / Storage) in the embed
 
 ### Discord Commands
 
@@ -89,9 +89,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DEUP-02 | Phase 1 | Complete (01-02: data/scanner.db persists across restarts, WAL mode) |
 | DEUP-03 | Phase 2 | Complete |
 | DEUP-04 | Phase 1 | Complete (01-02: thresholds, user_config tables in SQLite) |
-| ALRT-01 | Phase 7 | Pending |
-| ALRT-02 | Phase 7 | Pending |
-| ALRT-03 | Phase 7 | Pending |
+| ALRT-01 | Phase 7 | Complete |
+| ALRT-02 | Phase 7 | Complete |
+| ALRT-03 | Phase 7 | Complete |
 | CMND-01 | Phase 8 | Pending |
 | CMND-02 | Phase 8 | Pending |
 | CMND-03 | Phase 8 | Pending |

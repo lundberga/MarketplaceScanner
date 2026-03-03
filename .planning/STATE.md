@@ -18,14 +18,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-02)
 
 **Core value:** Surface flip-worthy hardware deals the moment they appear — before anyone else buys them.
-**Current focus:** Phase 6 — Deal Detection Engine — COMPLETE
+**Current focus:** Phase 7 — Discord Alerts — IN PROGRESS
 
 ## Current Position
 
-Phase: 6 of 9 (Deal Detection Engine) — COMPLETE
-Plan: 3 of 3 in current phase — COMPLETE (detectDeals wired into runCycle)
-Status: Plan 06-03 complete — detectDeals called every cycle, deals_alerted accurate in scan_log
-Last activity: 2026-03-03 — Plan 06-03 complete: detectDeals wired into scheduler loop
+Phase: 7 of 9 (Discord Alerts) — IN PROGRESS
+Plan: 1 of 2 in current phase — COMPLETE (alertSender.js Discord module created)
+Status: Plan 07-01 complete — alertSender.js with embed builder, throttled queue, alerted_at migration
+Last activity: 2026-03-03 — Plan 07-01 complete: Discord alertSender module created
 
 Progress: [████████████████████] 100%
 
@@ -57,6 +57,7 @@ Progress: [████████████████████] 100%
 | Phase 06-deal-detection-engine P01 | 3 | 1 tasks | 2 files |
 | Phase 06-deal-detection-engine P02 | 5 | 1 tasks | 2 files |
 | Phase 06-deal-detection-engine P03 | 1 | 1 tasks | 1 files |
+| Phase 07-discord-alerts P01 | 4 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -101,6 +102,11 @@ Recent decisions affecting current work:
 - [Phase 06-02]: Sold-comps query key uses threshold.keywords first entry; falls back to first 3 words of listing.title
 - [Phase 06-03]: detectDeals called only in successful scraper branch — paused/errored scrapers write 0 deals_alerted via let dealsAlerted = 0 initialization
 - [Phase 06-03]: No extra try/catch around detectDeals call site — detectDeals guarantees it never throws, so outer scraper catch handles scraper errors
+- [Phase 07-01]: EmbedBuilder imported from discord.js not @discordjs/builders — full ColorResolvable support including hex integers
+- [Phase 07-01]: enqueue is fire-and-forget — _drain() called without await, so callers (runCycle) return immediately
+- [Phase 07-01]: Client.channels.fetch() used instead of channels.cache.get() — cache may be empty at startup before GUILD_CREATE
+- [Phase 07-01]: alerted_at set only after successful channel.send — prevents permanent mark on failed delivery
+- [Phase 07-01]: filterUnalerted called inside enqueue before pushing to _queue — already-alerted listings never enter queue
 
 ### Pending Todos
 
@@ -115,5 +121,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-03
-Stopped at: Completed 06-03-PLAN.md — detectDeals wired into runCycle, Phase 6 complete
+Stopped at: Completed 07-01-PLAN.md — Discord alertSender.js module created, Phase 7 Plan 1 complete
 Resume file: None
