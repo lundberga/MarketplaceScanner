@@ -136,6 +136,7 @@ async function init(db) {
   return {
     enqueue: (alerts) => queue.enqueue(alerts, db),
     sendStartupMessage: () => sendStartupMessage(channel, db),
+    client,  // Exposed so commandHandler.init(client, db) can attach interactionCreate listener
   };
 }
 
