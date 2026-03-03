@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-03T12:00:56.514Z"
+last_updated: "2026-03-03T12:02:52.098Z"
 progress:
   total_phases: 8
-  completed_phases: 7
+  completed_phases: 8
   total_plans: 19
-  completed_plans: 18
+  completed_plans: 19
 ---
 
 # Project State
@@ -18,7 +18,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-02)
 
 **Core value:** Surface flip-worthy hardware deals the moment they appear — before anyone else buys them.
-**Current focus:** Phase 8 — Discord Commands — IN PROGRESS
+**Current focus:** Phase 8 — Discord Commands — COMPLETE
 
 ## Current Position
 
@@ -62,6 +62,7 @@ Progress: [████████████████████] 100%
 | Phase 08-discord-commands P01 | 1 | 2 tasks | 6 files |
 | Phase 08-discord-commands P04 | 1 | 2 tasks | 2 files |
 | Phase 08-discord-commands P03 | 2 | 1 tasks | 1 files |
+| Phase 08-discord-commands P02 | 3 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -122,6 +123,8 @@ Recent decisions affecting current work:
 - [Phase 08-discord-commands]: dismissed=0 OR dismissed===null double-guard in filterUnalerted — retroactive DEFAULT 0 from SQLite ALTER TABLE, null guard for rows inserted before migration ran
 - [Phase 08-03]: Resume uses DELETE instead of value='false' — runCycle's pauseRow?.value==='true' check means missing row is safe; avoids stale rows
 - [Phase 08-03]: VALID_MARKETPLACES defensive guard retained even though Discord enforces choices at UI level — belt-and-suspenders for correctness
+- [Phase 08-discord-commands]: INSERT always (no upsert) for threshold set — update pattern is remove then set; soft-delete via active=0 so detectDeals.loadThresholds continues working without changes
+- [Phase 08-discord-commands]: Zod rejects max_price=0 (must be positive int) and min_margin>1.0 (fraction 0..1) — field-level errors in ephemeral reply, never thrown
 
 ### Pending Todos
 
