@@ -173,5 +173,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 5. Vinted and Sweclockers Scrapers | 3/3 | Complete   | 2026-03-03 |
 | 6. Deal Detection Engine | 3/3 | Complete   | 2026-03-03 |
 | 7. Discord Alerts | 2/2 | Complete   | 2026-03-03 |
-| 8. Discord Commands | 1/4 | In Progress|  |
+| 8. Discord Commands | 3/4 | In Progress|  |
 | 9. Hardening | 0/1 | Not started | - |

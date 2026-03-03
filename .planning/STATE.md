@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-03T11:56:19Z"
+last_updated: "2026-03-03T12:00:56.514Z"
 progress:
-  total_phases: 9
+  total_phases: 8
   completed_phases: 7
-  total_plans: 16
-  completed_plans: 16
+  total_plans: 19
+  completed_plans: 18
 ---
 
 # Project State
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-03-02)
 ## Current Position
 
 Phase: 8 of 9 (Discord Commands) — IN PROGRESS
-Plan: 1 of 4 in current phase — COMPLETE (commandHandler scaffold and registerCommands.js created)
-Status: Plan 08-01 complete — interactionCreate routing scaffold, guild command registration, client exposed from alertSender
-Last activity: 2026-03-03 — Plan 08-01 complete: commandHandler scaffold and slash command registration infrastructure live
+Plan: 4 of 4 in current phase — COMPLETE (dismiss command, migrateDismissed, and filterUnalerted update)
+Status: Plan 08-04 complete — /dismiss slash command, dismissed column migration, filterUnalerted excludes dismissed listings
+Last activity: 2026-03-03 — Plan 08-04 complete: dismiss command and dismissed column filtering live
 
 Progress: [████████████████████] 100%
 
@@ -60,6 +60,8 @@ Progress: [████████████████████] 100%
 | Phase 07-discord-alerts P01 | 4 | 1 tasks | 1 files |
 | Phase 07-discord-alerts P02 | 2 | 2 tasks | 2 files |
 | Phase 08-discord-commands P01 | 1 | 2 tasks | 6 files |
+| Phase 08-discord-commands P04 | 1 | 2 tasks | 2 files |
+| Phase 08-discord-commands P03 | 2 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -117,6 +119,9 @@ Recent decisions affecting current work:
 - [Phase 08-01]: Guild-scoped registration via Routes.applicationGuildCommands for instant propagation vs global 1-hour delay
 - [Phase 08-01]: client exposed in alertSender.init() return value — no global state, passed explicitly to commandHandler.init(client, db)
 - [Phase 08-01]: DISCORD_CLIENT_ID added to .env.example — Application ID required for REST slash command registration
+- [Phase 08-discord-commands]: dismissed=0 OR dismissed===null double-guard in filterUnalerted — retroactive DEFAULT 0 from SQLite ALTER TABLE, null guard for rows inserted before migration ran
+- [Phase 08-03]: Resume uses DELETE instead of value='false' — runCycle's pauseRow?.value==='true' check means missing row is safe; avoids stale rows
+- [Phase 08-03]: VALID_MARKETPLACES defensive guard retained even though Discord enforces choices at UI level — belt-and-suspenders for correctness
 
 ### Pending Todos
 
@@ -131,5 +136,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-03
-Stopped at: Completed 08-01-PLAN.md — commandHandler scaffold and registerCommands.js created; Plans 08-02/03/04 ready for parallel execution
+Stopped at: Completed 08-04-PLAN.md — dismiss command with migrateDismissed and filterUnalerted update; Phase 08 all 4 plans complete
 Resume file: None
