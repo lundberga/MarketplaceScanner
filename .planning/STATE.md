@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-03-02)
 ## Current Position
 
 Phase: 5 of 9 (Vinted and Sweclockers Scrapers) — IN PROGRESS
-Plan: 2 of 3 in current phase — COMPLETE
-Status: Phase 5 plan 02 complete; next is plan 05-03 (integration + smoke test)
-Last activity: 2026-03-03 — Plan 05-02 complete: SweclockersScraper (RSS xmlMode parse, [Säljes] filter, classifyCategory on title) and sweclockersRunner (seed-mode + dedup wrapper)
+Plan: 1+2 of 3 in current phase — COMPLETE (plans 01 and 02 both done)
+Status: Phase 5 plans 01+02 complete; next is plan 05-03 (scheduler integration + smoke test)
+Last activity: 2026-03-03 — Plan 05-01 complete: VintedScraper (session-cookie bootstrap, JSON API, Cloudflare 403 handling) and vintedRunner (seed-mode + dedup wrapper)
 
 Progress: [█████████████░░░░░░░] 50%
 
@@ -103,5 +103,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-03
-Stopped at: Completed 05-02-PLAN.md — SweclockersScraper RSS feed scraper and sweclockersRunner seed-mode dedup wrapper
+Stopped at: Completed 05-01-PLAN.md — VintedScraper with session-cookie bootstrap, JSON API fetch, Cloudflare 403 handling, and vintedRunner seed-mode dedup wrapper
 Resume file: None
