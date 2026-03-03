@@ -77,7 +77,7 @@ Plans:
   2. Scan cycles complete sequentially — a new cycle does not start until the previous one finishes, regardless of how long scraping takes
   3. Pausing a marketplace in the user_config table causes the scheduler to skip that marketplace in subsequent cycles without restarting the process
   4. Each completed scan cycle produces a row in the scan_log table with marketplace, start time, end time, and listing count
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [x] 04-01: node-cron scheduler, noOverlap cycle sequencing, scan_log writes
@@ -123,11 +123,11 @@ Plans:
   2. When sold-comp data is available, the embed includes the estimated profit margin ("~1 400 SEK margin, N comps")
   3. After a Windows restart, the bot comes back up and does not re-post alerts for listings it already alerted on in the previous session
   4. When the bot starts for the first time on a channel with existing listings, it sends zero historical alerts (seed mode populated seen-IDs on cold start in Phase 2)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 07-01: discord.js client setup, EmbedBuilder templates, message queue (1 msg/1.5s cap)
-- [ ] 07-02: Wire DealAlert output into embed poster, seed mode integration, startup status message
+- [ ] 07-01-PLAN.md — alertSender.js: Discord client lifecycle, embed builder with per-marketplace colors, throttled queue, alerted_at migration
+- [ ] 07-02-PLAN.md — Wire alertSender into index.js and runCycle.js; startup message; human-verify embeds in Discord
 
 ### Phase 8: Discord Commands
 **Goal**: The operator can control the bot entirely from Discord — adjusting thresholds, pausing marketplaces, and dismissing dealt-with alerts — without touching code or config files
@@ -138,7 +138,7 @@ Plans:
   2. `/threshold list` returns all currently active thresholds in a readable Discord reply
   3. `/pause vinted` causes the Vinted scraper to be skipped in subsequent cycles; `/resume vinted` re-enables it — both confirmed by the bot's reply
   4. `/dismiss <listing-id>` adds the listing ID to SQLite dismissed state and the bot never re-alerts on that listing
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 08-01: Slash command registration script (guild-only, manual run), command handler scaffold
@@ -154,7 +154,7 @@ Plans:
   1. After a Windows reboot, the bot restarts automatically without any manual action from the operator
   2. An unhandled exception or promise rejection in any scraper is caught, logged, and reported to the Discord status channel — the process does not exit silently
   3. Closing the terminal window that started the bot does not stop the bot
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 09-01: pm2 setup, Windows Task Scheduler startup hook, global exception/rejection handlers
