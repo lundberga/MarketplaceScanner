@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Tradera Scraper** - Tradera active listing scraper + sold-comps cache + deduplication pipeline (completed 2026-03-02)
 - [x] **Phase 3: Blocket Scraper** - Blocket SSR HTML cheerio parser with canary checks (no __NEXT_DATA__) (completed 2026-03-02)
 - [ ] **Phase 4: Scheduler** - node-cron polling loop with pause state, p-queue rate limiting, scan logging
-- [ ] **Phase 5: Vinted and Sweclockers Scrapers** - Two lower-priority marketplace scrapers added to the proven pipeline
+- [x] **Phase 5: Vinted and Sweclockers Scrapers** - Two lower-priority marketplace scrapers added to the proven pipeline (completed 2026-03-03)
 - [ ] **Phase 6: Deal Detection Engine** - Threshold matching + Tradera sold-comps integration + auction filter
 - [ ] **Phase 7: Discord Alerts** - discord.js embed posting with message queue and seed mode
 - [ ] **Phase 8: Discord Commands** - Slash commands for threshold management, scan control, and deal dismissal
@@ -94,9 +94,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — VintedScraper: internal JSON API (v2/catalog/items), session-cookie bootstrap, per-keyword jitter, 429/403 warn+return[]
+- [x] 05-01-PLAN.md — VintedScraper: internal JSON API (v2/catalog/items), session-cookie bootstrap, per-keyword jitter, 429/403 warn+return[]
 - [x] 05-02-PLAN.md — SweclockersScraper: RSS feed (/feeds/marknad), cheerio xmlMode, [Säljes] filter, parsePrice on description
-- [ ] 05-03-PLAN.md — Scheduler integration: register runVinted + runSweclockers in index.js scrapers array; human-verify startup log
+- [x] 05-03-PLAN.md — Scheduler integration: register runVinted + runSweclockers in index.js scrapers array; human-verify startup log
 
 ### Phase 6: Deal Detection Engine
 **Goal**: Every new listing is evaluated for deal worthiness — checked against user-defined price thresholds and enriched with an estimated profit margin from Tradera sold comparables — and only genuinely cheap listings reach the next layer as DealAlert structs
@@ -170,7 +170,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 2. Tradera Scraper | 3/3 | Complete    | 2026-03-02 |
 | 3. Blocket Scraper | 1/1 | Complete    | 2026-03-02 |
 | 4. Scheduler | 1/1 | Complete    | 2026-03-02 |
-| 5. Vinted and Sweclockers Scrapers | 2/3 | In Progress|  |
+| 5. Vinted and Sweclockers Scrapers | 3/3 | Complete   | 2026-03-03 |
 | 6. Deal Detection Engine | 0/3 | Not started | - |
 | 7. Discord Alerts | 0/2 | Not started | - |
 | 8. Discord Commands | 0/4 | Not started | - |
