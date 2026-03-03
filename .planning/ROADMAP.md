@@ -80,7 +80,7 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 04-01: node-cron scheduler, p-queue rate limiting, cycle sequencing, scan_log writes
+- [x] 04-01: node-cron scheduler, noOverlap cycle sequencing, scan_log writes
 
 ### Phase 5: Vinted and Sweclockers Scrapers
 **Goal**: The bot scrapes two additional marketplaces, each isolated in its own module so that one scraper breaking does not affect the others
@@ -91,11 +91,12 @@ Plans:
   2. Running the Sweclockers scraper returns Listing objects from the köp/sälj section in the shared schema
   3. Both scrapers' listing IDs flow into the same deduplication table used by Tradera and Blocket
   4. A failure in the Vinted scraper does not prevent the Blocket or Tradera cycle from completing in the same scan loop
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 05-01: VintedScraper — `__NEXT_DATA__` parsing, realistic headers, jitter, 429 backoff
-- [ ] 05-02: SweclockersScraper — köp/sälj HTML parsing, shared IScraper interface
+- [ ] 05-01-PLAN.md — VintedScraper: internal JSON API (v2/catalog/items), session-cookie bootstrap, per-keyword jitter, 429/403 warn+return[]
+- [ ] 05-02-PLAN.md — SweclockersScraper: RSS feed (/feeds/marknad), cheerio xmlMode, [Säljes] filter, parsePrice on description
+- [ ] 05-03-PLAN.md — Scheduler integration: register runVinted + runSweclockers in index.js scrapers array; human-verify startup log
 
 ### Phase 6: Deal Detection Engine
 **Goal**: Every new listing is evaluated for deal worthiness — checked against user-defined price thresholds and enriched with an estimated profit margin from Tradera sold comparables — and only genuinely cheap listings reach the next layer as DealAlert structs
@@ -168,8 +169,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 1. Foundation | 2/2 | Complete    | 2026-03-02 |
 | 2. Tradera Scraper | 3/3 | Complete    | 2026-03-02 |
 | 3. Blocket Scraper | 1/1 | Complete    | 2026-03-02 |
-| 4. Scheduler | 0/1 | Not started | - |
-| 5. Vinted and Sweclockers Scrapers | 0/2 | Not started | - |
+| 4. Scheduler | 1/1 | Complete    | 2026-03-02 |
+| 5. Vinted and Sweclockers Scrapers | 0/3 | Not started | - |
 | 6. Deal Detection Engine | 0/3 | Not started | - |
 | 7. Discord Alerts | 0/2 | Not started | - |
 | 8. Discord Commands | 0/4 | Not started | - |
