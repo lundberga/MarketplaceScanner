@@ -110,8 +110,8 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Swedish auction-end-time parser (parseAuctionEnd + passesAuctionFilter) with unit tests
-- [ ] 06-02-PLAN.md — detectDeals engine: threshold matching, sold-comps enrichment, DealAlert struct assembly
+- [x] 06-01-PLAN.md — Swedish auction-end-time parser (parseAuctionEnd + passesAuctionFilter) with unit tests
+- [x] 06-02-PLAN.md — detectDeals engine: threshold matching, sold-comps enrichment, DealAlert struct assembly
 - [ ] 06-03-PLAN.md — runCycle.js wiring: inject detectDeals after scraper.run(), fix deals_alerted in scan_log
 
 ### Phase 7: Discord Alerts
@@ -171,7 +171,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 3. Blocket Scraper | 1/1 | Complete    | 2026-03-02 |
 | 4. Scheduler | 1/1 | Complete    | 2026-03-02 |
 | 5. Vinted and Sweclockers Scrapers | 3/3 | Complete   | 2026-03-03 |
-| 6. Deal Detection Engine | 0/3 | Not started | - |
+| 6. Deal Detection Engine | 2/3 | In Progress | - |
 | 7. Discord Alerts | 0/2 | Not started | - |
 | 8. Discord Commands | 0/4 | Not started | - |
 | 9. Hardening | 0/1 | Not started | - |

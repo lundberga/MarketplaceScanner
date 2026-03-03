@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-03T10:03:34.634Z"
+last_updated: "2026-03-03T10:19:08Z"
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 13
-  completed_plans: 11
+  completed_plans: 12
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-03-02)
 ## Current Position
 
 Phase: 6 of 9 (Deal Detection Engine) — IN PROGRESS
-Plan: 1 of 3 in current phase — COMPLETE (parseAuctionEnd utility done)
-Status: Plan 06-01 complete — parseAuctionEnd + passesAuctionFilter utility with 11 tests passing
-Last activity: 2026-03-03 — Plan 06-01 complete: Swedish auction-end parser and 2-hour filter implemented
+Plan: 2 of 3 in current phase — COMPLETE (detectDeals engine done)
+Status: Plan 06-02 complete — detectDeals async engine with 18 unit tests passing
+Last activity: 2026-03-03 — Plan 06-02 complete: threshold matching, sold-comps enrichment, DealAlert struct
 
-Progress: [█████████████████░░░] 85%
+Progress: [██████████████████░░] 90%
 
 ## Performance Metrics
 
@@ -55,6 +55,7 @@ Progress: [█████████████████░░░] 85%
 | Phase 05-vinted-and-sweclockers-scrapers P02 | 2 | 2 tasks | 2 files |
 | Phase 05-vinted-and-sweclockers-scrapers P03 | 5 | 2 tasks | 1 files |
 | Phase 06-deal-detection-engine P01 | 3 | 1 tasks | 2 files |
+| Phase 06-deal-detection-engine P02 | 5 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,9 @@ Recent decisions affecting current work:
 - [Phase 05-03]: No runCycle.js changes needed — existing per-scraper try/catch and pause-state lookup handle new scrapers by name automatically
 - [Phase 06-deal-detection-engine]: nowMs parameter injected into parseAuctionEnd and passesAuctionFilter for deterministic testing — avoids Date.now() non-determinism
 - [Phase 06-deal-detection-engine]: Year-boundary fix: candidate incremented to next year when it falls >60s in the past — handles January dates parsed in December
+- [Phase 06-02]: lookupSoldPrice injected as optional third arg to detectDeals for testability — production path defaults to real implementation without monkey-patching
+- [Phase 06-02]: min_margin check skipped (listing passes) when medianPrice is null — never discard listing due to unavailable comps
+- [Phase 06-02]: Sold-comps query key uses threshold.keywords first entry; falls back to first 3 words of listing.title
 
 ### Pending Todos
 
@@ -108,5 +112,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-03
-Stopped at: Completed 06-01-PLAN.md — parseAuctionEnd + passesAuctionFilter utility with 11 unit tests passing
+Stopped at: Completed 06-02-PLAN.md — detectDeals engine with 18 unit tests passing
 Resume file: None

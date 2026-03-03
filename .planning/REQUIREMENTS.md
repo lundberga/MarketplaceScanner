@@ -14,9 +14,9 @@
 
 ### Deal Detection
 
-- [ ] **DEAL-01**: Bot evaluates each new listing against user-defined price thresholds per hardware category or specific item name
-- [ ] **DEAL-02**: Bot fetches recent Tradera sold prices for similar items and includes estimated profit margin in alerts
-- [ ] **DEAL-03**: Bot only alerts on buy-now listings or auctions ending within 2 hours — never on current bid prices mid-auction
+- [x] **DEAL-01**: Bot evaluates each new listing against user-defined price thresholds per hardware category or specific item name
+- [x] **DEAL-02**: Bot fetches recent Tradera sold prices for similar items and includes estimated profit margin in alerts
+- [x] **DEAL-03**: Bot only alerts on buy-now listings or auctions ending within 2 hours — never on current bid prices mid-auction
 
 ### Deduplication & Persistence
 
@@ -82,9 +82,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCRP-02 | Phase 2 | Complete |
 | SCRP-03 | Phase 5 | Complete |
 | SCRP-04 | Phase 5 | Complete |
-| DEAL-01 | Phase 6 | Pending |
-| DEAL-02 | Phase 6 | Pending |
-| DEAL-03 | Phase 6 | Pending |
+| DEAL-01 | Phase 6 | Complete |
+| DEAL-02 | Phase 6 | Complete |
+| DEAL-03 | Phase 6 | Complete |
 | DEUP-01 | Phase 1 | Complete (01-02: seen_listings table with composite key) |
 | DEUP-02 | Phase 1 | Complete (01-02: data/scanner.db persists across restarts, WAL mode) |
 | DEUP-03 | Phase 2 | Complete |
@@ -106,4 +106,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-02*
-*Last updated: 2026-03-02 after 01-02 execution — DEUP-01, DEUP-02, DEUP-04 complete (SQLite schema with all 5 tables, WAL mode, absolute path)*
+*Last updated: 2026-03-03 after 06-02 execution — DEAL-01, DEAL-02, DEAL-03 complete (detectDeals engine with threshold matching, sold-comps enrichment, auction filter)*
