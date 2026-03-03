@@ -95,7 +95,7 @@ Plans:
 
 Plans:
 - [ ] 05-01-PLAN.md — VintedScraper: internal JSON API (v2/catalog/items), session-cookie bootstrap, per-keyword jitter, 429/403 warn+return[]
-- [ ] 05-02-PLAN.md — SweclockersScraper: RSS feed (/feeds/marknad), cheerio xmlMode, [Säljes] filter, parsePrice on description
+- [x] 05-02-PLAN.md — SweclockersScraper: RSS feed (/feeds/marknad), cheerio xmlMode, [Säljes] filter, parsePrice on description
 - [ ] 05-03-PLAN.md — Scheduler integration: register runVinted + runSweclockers in index.js scrapers array; human-verify startup log
 
 ### Phase 6: Deal Detection Engine
@@ -170,7 +170,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 2. Tradera Scraper | 3/3 | Complete    | 2026-03-02 |
 | 3. Blocket Scraper | 1/1 | Complete    | 2026-03-02 |
 | 4. Scheduler | 1/1 | Complete    | 2026-03-02 |
-| 5. Vinted and Sweclockers Scrapers | 0/3 | Not started | - |
+| 5. Vinted and Sweclockers Scrapers | 2/3 | In Progress|  |
 | 6. Deal Detection Engine | 0/3 | Not started | - |
 | 7. Discord Alerts | 0/2 | Not started | - |
 | 8. Discord Commands | 0/4 | Not started | - |
