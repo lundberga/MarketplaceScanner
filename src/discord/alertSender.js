@@ -9,6 +9,7 @@ const {
   ActionRowBuilder,
 } = require('discord.js');
 const logger = require('../utils/logger');
+const { migrateDismissed } = require('./commands/dismiss');
 
 const MARKETPLACE_COLORS = {
   tradera:     0x3498DB,  // Blue
@@ -27,8 +28,13 @@ function migrateAlertedAt(db) {
 
 function filterUnalerted(alerts, db) {
   return alerts.filter(alert => {
-    const row = db.prepare('SELECT alerted_at FROM seen_listings WHERE id = ?').get(alert.listing.id);
-    return row && row.alerted_at === null;
+    const row = db.prepare(
+      'SELECT alerted_at, dismissed FROM seen_listings WHERE id = ?'
+    ).get(alert.listing.id);
+    // Exclude if not found, already alerted, or dismissed
+    return row
+      && row.alerted_at === null
+      && (row.dismissed === 0 || row.dismissed === null);
   });
 }
 
@@ -114,6 +120,7 @@ class AlertQueue {
 
 async function init(db) {
   migrateAlertedAt(db);
+  migrateDismissed(db);
 
   const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
