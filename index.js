@@ -10,6 +10,7 @@ const { runVinted } = require('./src/scrapers/vintedRunner');
 const { runSweclockers } = require('./src/scrapers/sweclockersRunner');
 const { runCycle } = require('./src/scheduler/runCycle');
 const alertSender = require('./src/discord/alertSender');
+const commandHandler = require('./src/discord/commandHandler');
 
 // --- Configuration ---
 
@@ -37,6 +38,8 @@ const scrapers = [
   // Init Discord — blocks until client is ready and channel is fetched
   const discord = await alertSender.init(db);
   await discord.sendStartupMessage();
+  // Wire Discord slash command handler — interacts via discord.client
+  await commandHandler.init(discord.client, db);
 
   // Validate cron expression before scheduling — catches out-of-range SCAN_INTERVAL_MINUTES values
   // (e.g. 60 produces */60 * * * * which is invalid: minute field is 0-59)
