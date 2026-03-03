@@ -40,7 +40,7 @@
 
 ### Scheduling & Process
 
-- [ ] **SCHD-01**: Bot automatically scans all enabled marketplaces every 5–15 minutes on a configurable interval
+- [x] **SCHD-01**: Bot automatically scans all enabled marketplaces every 5–15 minutes on a configurable interval
 - [ ] **SCHD-02**: Bot runs as a persistent Windows background process using pm2, surviving terminal closes and reboots
 
 ## v2 Requirements
@@ -96,7 +96,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CMND-02 | Phase 8 | Complete |
 | CMND-03 | Phase 8 | Complete |
 | CMND-04 | Phase 8 | Complete |
-| SCHD-01 | Phase 4 | Pending |
+| SCHD-01 | Phase 4 | Complete |
 | SCHD-02 | Phase 9 | Pending |
 
 **Coverage:**
