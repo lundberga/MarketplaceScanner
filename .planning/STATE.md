@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-03T10:26:36.938Z"
+last_updated: "2026-03-03T11:04:47.762Z"
 progress:
-  total_phases: 6
-  completed_phases: 6
-  total_plans: 13
-  completed_plans: 13
+  total_phases: 7
+  completed_phases: 7
+  total_plans: 15
+  completed_plans: 15
 ---
 
 # Project State
@@ -58,6 +58,7 @@ Progress: [████████████████████] 100%
 | Phase 06-deal-detection-engine P02 | 5 | 1 tasks | 2 files |
 | Phase 06-deal-detection-engine P03 | 1 | 1 tasks | 1 files |
 | Phase 07-discord-alerts P01 | 4 | 1 tasks | 1 files |
+| Phase 07-discord-alerts P02 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -107,6 +108,9 @@ Recent decisions affecting current work:
 - [Phase 07-01]: Client.channels.fetch() used instead of channels.cache.get() — cache may be empty at startup before GUILD_CREATE
 - [Phase 07-01]: alerted_at set only after successful channel.send — prevents permanent mark on failed delivery
 - [Phase 07-01]: filterUnalerted called inside enqueue before pushing to _queue — already-alerted listings never enter queue
+- [Phase 07-discord-alerts]: Async IIFE in index.js awaits Discord init before cron schedule — CJS top-level await workaround
+- [Phase 07-discord-alerts]: alertSender injected as 4th param to runCycle — null-safe for tests, no global state
+- [Phase 07-discord-alerts]: enqueue called without await in runCycle — preserves noOverlap:true cron semantics, cycle returns immediately
 
 ### Pending Todos
 

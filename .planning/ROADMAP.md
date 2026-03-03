@@ -18,7 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 4: Scheduler** - node-cron polling loop with pause state, p-queue rate limiting, scan logging
 - [x] **Phase 5: Vinted and Sweclockers Scrapers** - Two lower-priority marketplace scrapers added to the proven pipeline (completed 2026-03-03)
 - [x] **Phase 6: Deal Detection Engine** - Threshold matching + Tradera sold-comps integration + auction filter (completed 2026-03-03)
-- [ ] **Phase 7: Discord Alerts** - discord.js embed posting with message queue and seed mode
+- [x] **Phase 7: Discord Alerts** - discord.js embed posting with message queue and seed mode (completed 2026-03-03)
 - [ ] **Phase 8: Discord Commands** - Slash commands for threshold management, scan control, and deal dismissal
 - [ ] **Phase 9: Hardening** - pm2 Windows process management, global error handlers, restart survival
 
@@ -172,6 +172,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 4. Scheduler | 1/1 | Complete    | 2026-03-02 |
 | 5. Vinted and Sweclockers Scrapers | 3/3 | Complete   | 2026-03-03 |
 | 6. Deal Detection Engine | 3/3 | Complete   | 2026-03-03 |
-| 7. Discord Alerts | 1/2 | In Progress|  |
+| 7. Discord Alerts | 2/2 | Complete   | 2026-03-03 |
 | 8. Discord Commands | 0/4 | Not started | - |
 | 9. Hardening | 0/1 | Not started | - |
