@@ -107,12 +107,12 @@ Plans:
   2. Each DealAlert struct includes estimated profit margin (listed price subtracted from median sold comp price) when sold-comp data is available, and omits the field gracefully when it is not
   3. An auction listing mid-run (not buy-now, not ending within 2 hours) is filtered out and never reaches Discord
   4. Swedish price strings with space-thousands separators ("2 500 kr", "1 200:-") are parsed to integers correctly for all listing sources
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 06-01: Swedish price parser with unit tests covering all marketplace formats
-- [ ] 06-02: Threshold matching engine — category and item-specific thresholds loaded from SQLite
-- [ ] 06-03: DealAlert struct construction — sold-comps enrichment, auction filter, fallback to threshold-only
+- [ ] 06-01-PLAN.md — Swedish auction-end-time parser (parseAuctionEnd + passesAuctionFilter) with unit tests
+- [ ] 06-02-PLAN.md — detectDeals engine: threshold matching, sold-comps enrichment, DealAlert struct assembly
+- [ ] 06-03-PLAN.md — runCycle.js wiring: inject detectDeals after scraper.run(), fix deals_alerted in scan_log
 
 ### Phase 7: Discord Alerts
 **Goal**: Users see rich Discord embed alerts for every deal the engine surfaces, delivered at a controlled rate, with no flood of historical listings on cold start
