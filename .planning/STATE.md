@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-03T11:22:50.087Z"
+last_updated: "2026-03-03T11:56:19Z"
 progress:
-  total_phases: 7
+  total_phases: 9
   completed_phases: 7
-  total_plans: 15
-  completed_plans: 15
+  total_plans: 16
+  completed_plans: 16
 ---
 
 # Project State
@@ -18,14 +18,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-02)
 
 **Core value:** Surface flip-worthy hardware deals the moment they appear — before anyone else buys them.
-**Current focus:** Phase 8 — Discord Commands — NEXT
+**Current focus:** Phase 8 — Discord Commands — IN PROGRESS
 
 ## Current Position
 
-Phase: 7 of 9 (Discord Alerts) — COMPLETE
-Plan: 2 of 2 in current phase — COMPLETE (Discord pipeline wired, human-verify approved)
-Status: Plan 07-02 complete — alertSender injected into runCycle and index.js; Discord embeds verified in channel
-Last activity: 2026-03-03 — Plan 07-02 complete: Discord pipeline live and human-verified
+Phase: 8 of 9 (Discord Commands) — IN PROGRESS
+Plan: 1 of 4 in current phase — COMPLETE (commandHandler scaffold and registerCommands.js created)
+Status: Plan 08-01 complete — interactionCreate routing scaffold, guild command registration, client exposed from alertSender
+Last activity: 2026-03-03 — Plan 08-01 complete: commandHandler scaffold and slash command registration infrastructure live
 
 Progress: [████████████████████] 100%
 
@@ -59,6 +59,7 @@ Progress: [████████████████████] 100%
 | Phase 06-deal-detection-engine P03 | 1 | 1 tasks | 1 files |
 | Phase 07-discord-alerts P01 | 4 | 1 tasks | 1 files |
 | Phase 07-discord-alerts P02 | 2 | 2 tasks | 2 files |
+| Phase 08-discord-commands P01 | 1 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -112,6 +113,10 @@ Recent decisions affecting current work:
 - [Phase 07-discord-alerts]: alertSender injected as 4th param to runCycle — null-safe for tests, no global state
 - [Phase 07-discord-alerts]: enqueue called without await in runCycle — preserves noOverlap:true cron semantics, cycle returns immediately
 - [Phase 07-discord-alerts]: Task 3 human-verify approved: Discord startup message and deal embeds confirmed appearing in channel; restart tested with no re-posting of alerted listings
+- [Phase 08-01]: Lazy require inside switch cases — command module files don't exist until 08-02/03/04; startup never fails, require throws only on actual command invocation
+- [Phase 08-01]: Guild-scoped registration via Routes.applicationGuildCommands for instant propagation vs global 1-hour delay
+- [Phase 08-01]: client exposed in alertSender.init() return value — no global state, passed explicitly to commandHandler.init(client, db)
+- [Phase 08-01]: DISCORD_CLIENT_ID added to .env.example — Application ID required for REST slash command registration
 
 ### Pending Todos
 
@@ -126,5 +131,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-03
-Stopped at: Completed 07-02-PLAN.md — Discord pipeline wired and human-verify checkpoint approved, Phase 7 complete
+Stopped at: Completed 08-01-PLAN.md — commandHandler scaffold and registerCommands.js created; Plans 08-02/03/04 ready for parallel execution
 Resume file: None

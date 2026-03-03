@@ -33,10 +33,10 @@
 
 ### Discord Commands
 
-- [ ] **CMND-01**: User can set or update a price threshold per category or specific item (e.g. `/threshold set GPU 2500`)
-- [ ] **CMND-02**: User can view all currently active price thresholds
-- [ ] **CMND-03**: User can pause and resume scanning per marketplace (e.g. `/pause vinted`, `/resume vinted`)
-- [ ] **CMND-04**: User can dismiss a specific deal alert to prevent the bot from re-alerting on that listing
+- [x] **CMND-01**: User can set or update a price threshold per category or specific item (e.g. `/threshold set GPU 2500`)
+- [x] **CMND-02**: User can view all currently active price thresholds
+- [x] **CMND-03**: User can pause and resume scanning per marketplace (e.g. `/pause vinted`, `/resume vinted`)
+- [x] **CMND-04**: User can dismiss a specific deal alert to prevent the bot from re-alerting on that listing
 
 ### Scheduling & Process
 
@@ -92,10 +92,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ALRT-01 | Phase 7 | Complete |
 | ALRT-02 | Phase 7 | Complete |
 | ALRT-03 | Phase 7 | Complete |
-| CMND-01 | Phase 8 | Pending |
-| CMND-02 | Phase 8 | Pending |
-| CMND-03 | Phase 8 | Pending |
-| CMND-04 | Phase 8 | Pending |
+| CMND-01 | Phase 8 | Complete |
+| CMND-02 | Phase 8 | Complete |
+| CMND-03 | Phase 8 | Complete |
+| CMND-04 | Phase 8 | Complete |
 | SCHD-01 | Phase 4 | Pending |
 | SCHD-02 | Phase 9 | Pending |
 
