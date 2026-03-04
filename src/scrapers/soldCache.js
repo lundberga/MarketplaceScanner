@@ -6,6 +6,8 @@ const { parsePrice } = require('../utils/parsePrice');
 const logger = require('../utils/logger');
 
 const CACHE_TTL_SECONDS = 4 * 60 * 60; // 4 hours
+// Tradera is the authoritative sold-price reference for Swedish hardware.
+// Used for sold-comps regardless of which marketplace a filter targets.
 const SOLD_URL = 'https://www.tradera.com/search';
 const MIN_SAMPLES = 3; // minimum sold comps to compute a meaningful median
 

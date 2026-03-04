@@ -4,15 +4,17 @@ const { Events, MessageFlags } = require('discord.js');
 const logger = require('../utils/logger');
 
 // Per-command handlers — each in its own module for clean file ownership
-// Plans 08-02/03/04 create these files; require() calls are deferred so startup
-// does not fail before those files exist. Use lazy require inside the handler.
 
-async function init(client, db) {
+async function init(client, db, ctx = {}) {
   client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     try {
       switch (interaction.commandName) {
+        case 'filter': {
+          const { handleFilter } = require('./commands/filter');
+          return await handleFilter(interaction, db);
+        }
         case 'threshold': {
           const { handleThreshold } = require('./commands/threshold');
           return await handleThreshold(interaction, db);
@@ -28,6 +30,14 @@ async function init(client, db) {
         case 'dismiss': {
           const { handleDismiss } = require('./commands/dismiss');
           return await handleDismiss(interaction, db);
+        }
+        case 'scan': {
+          const { handleScan } = require('./commands/scan');
+          return await handleScan(interaction, ctx);
+        }
+        case 'status': {
+          const { handleStatus } = require('./commands/status');
+          return await handleStatus(interaction, db);
         }
         default:
           logger.warn({ command: interaction.commandName }, 'commandHandler: unknown command');

@@ -4,21 +4,6 @@ const { MessageFlags } = require('discord.js');
 const logger = require('../../utils/logger');
 
 /**
- * Idempotent migration — adds `dismissed INTEGER DEFAULT 0` to seen_listings if absent.
- * Called from alertSender.init() before any command handler fires.
- * Safe to run on a DB that already has the column (pragma check prevents double-ALTER).
- *
- * @param {import('better-sqlite3').Database} db
- */
-function migrateDismissed(db) {
-  const cols = db.pragma('table_info(seen_listings)');
-  if (!cols.some(c => c.name === 'dismissed')) {
-    db.exec('ALTER TABLE seen_listings ADD COLUMN dismissed INTEGER DEFAULT 0');
-    logger.info('Migration applied: seen_listings.dismissed added');
-  }
-}
-
-/**
  * Handles the /dismiss slash command.
  * Marks the given listing_id as dismissed so it never triggers a future alert.
  * Replies ephemerally in all cases.
@@ -56,4 +41,4 @@ async function handleDismiss(interaction, db) {
   });
 }
 
-module.exports = { handleDismiss, migrateDismissed };
+module.exports = { handleDismiss };

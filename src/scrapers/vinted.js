@@ -71,25 +71,19 @@ class VintedScraper {
         redirect: 'follow',
       });
 
-      // Try standard header first, then undici extension
-      let cookieHeader = res.headers.get('set-cookie');
-      if (!cookieHeader) {
-        const cookies = res.headers.getSetCookie ? res.headers.getSetCookie() : [];
-        cookieHeader = cookies[0] || null;
+      // Vinted uses access_token_web (JWT) — scan all Set-Cookie headers
+      const allCookies = res.headers.getSetCookie ? res.headers.getSetCookie() : [];
+      let token = null;
+      for (const c of allCookies) {
+        const m = c.match(/^access_token_web=([^;]+)/);
+        if (m && m[1].length > 10) { token = m[1]; break; }
       }
-
-      if (!cookieHeader) {
-        logger.warn('Vinted: no set-cookie header from homepage — proceeding without session cookie');
+      if (!token) {
+        logger.warn({ first: allCookies[0]?.substring(0, 80) }, 'Vinted: access_token_web not found — proceeding without cookie');
         return null;
       }
 
-      const match = cookieHeader.match(/_vinted_\w+_session=([^;]+)/);
-      if (!match) {
-        logger.warn({ cookieHeader: cookieHeader.substring(0, 100) }, 'Vinted: session cookie pattern not found — proceeding without cookie');
-        return null;
-      }
-
-      return match[1];
+      return token;
     } catch (err) {
       logger.warn({ err: err.message }, 'Vinted: error fetching session cookie — proceeding without cookie');
       return null;
@@ -117,7 +111,7 @@ class VintedScraper {
       'Accept-Language': 'sv-SE,sv;q=0.9,en;q=0.8',
     };
     if (sessionCookie) {
-      headers['Cookie'] = `_vinted_fr_session=${sessionCookie}`;
+      headers['Cookie'] = `access_token_web=${sessionCookie}`;
     }
 
     let res;
@@ -165,10 +159,6 @@ class VintedScraper {
    * @returns {import('./IScraper').Listing[]}
    */
   _parse(items, keyword) {
-    if (items.length > 0) {
-      logger.info({ rawItem: items[0] }, 'Vinted raw item sample');
-    }
-
     const seen = new Set();
     const listings = [];
 
@@ -181,7 +171,8 @@ class VintedScraper {
 
       seen.add(id);
 
-      const price_sek = Math.round(parseFloat(item.price || '0'));
+      const rawPrice = typeof item.price === 'object' ? item.price?.amount : item.price;
+      const price_sek = Math.round(parseFloat(rawPrice || '0'));
       const url = item.url || `https://www.vinted.se/items/${item.id}`;
 
       listings.push({

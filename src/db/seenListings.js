@@ -26,13 +26,13 @@ function filterAndMarkSeen(listings) {
 
   // Insert novel listings atomically — INSERT OR IGNORE handles any race-condition duplicates
   const insertStmt = db.prepare(`
-    INSERT OR IGNORE INTO seen_listings (id, marketplace, first_seen, title, price_sek)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT OR IGNORE INTO seen_listings (id, marketplace, first_seen, title, price_sek, url)
+    VALUES (?, ?, ?, ?, ?, ?)
   `);
   const insertAll = db.transaction((items) => {
     const now = Math.floor(Date.now() / 1000);
     for (const l of items) {
-      insertStmt.run(l.id, l.marketplace, now, l.title || null, l.price_sek || null);
+      insertStmt.run(l.id, l.marketplace, now, l.title || null, l.price_sek || null, l.url ?? null);
     }
   });
   insertAll(novel);
@@ -54,4 +54,14 @@ function countSeen(marketplace) {
   return row ? row.cnt : 0;
 }
 
-module.exports = { filterAndMarkSeen, countSeen };
+const PRUNE_TTL_DAYS = 90;
+
+function pruneOldListings(db) {
+  const cutoff = Math.floor(Date.now() / 1000) - (PRUNE_TTL_DAYS * 86400);
+  const info = db.prepare('DELETE FROM seen_listings WHERE first_seen < ?').run(cutoff);
+  if (info.changes > 0) {
+    logger.info({ deleted: info.changes, cutoff_days: PRUNE_TTL_DAYS }, 'Pruned old seen_listings');
+  }
+}
+
+module.exports = { filterAndMarkSeen, countSeen, pruneOldListings };

@@ -9,7 +9,7 @@ const {
   ActionRowBuilder,
 } = require('discord.js');
 const logger = require('../utils/logger');
-const { migrateDismissed } = require('./commands/dismiss');
+const { parseAuctionEnd } = require('../utils/parseAuctionEnd');
 
 const MARKETPLACE_COLORS = {
   tradera:     0x3498DB,  // Blue
@@ -17,14 +17,6 @@ const MARKETPLACE_COLORS = {
   vinted:      0x1ABC9C,  // Teal
   sweclockers: 0xE67E22,  // Orange
 };
-
-function migrateAlertedAt(db) {
-  const cols = db.pragma('table_info(seen_listings)');
-  if (!cols.some(c => c.name === 'alerted_at')) {
-    db.exec('ALTER TABLE seen_listings ADD COLUMN alerted_at INTEGER');
-    logger.info('Migration applied: seen_listings.alerted_at added');
-  }
-}
 
 function filterUnalerted(alerts, db) {
   return alerts.filter(alert => {
@@ -39,21 +31,69 @@ function filterUnalerted(alerts, db) {
 }
 
 function buildEmbed(alert) {
-  const { listing, estimatedMargin, sampleCount } = alert;
+  const { listing, threshold, estimatedMargin, sampleCount } = alert;
   const color = MARKETPLACE_COLORS[listing.marketplace] || 0x99AAB5;
+  const isAuction = listing.listingType === 'auction';
+
+  // Title: listing type header
+  const typeLabel = isAuction ? '✅ AUCTION Listing' : '✅ BUY IT NOW Listing';
+
+  // Description: item title + price + marketplace
+  const priceFmt = listing.price_sek.toLocaleString('sv-SE');
+  const description = `**${listing.title.slice(0, 200)}** (${priceFmt} SEK) [${listing.marketplace}]`;
 
   const embed = new EmbedBuilder()
     .setColor(color)
-    .setTitle(listing.title.slice(0, 256))
-    .addFields({ name: 'Pris', value: `${listing.price_sek} SEK`, inline: true })
-    .addFields({ name: 'Källa', value: listing.marketplace, inline: true })
-    .addFields({ name: 'Kategori', value: listing.category || '—', inline: true })
+    .setTitle(typeLabel)
+    .setURL(listing.url)
+    .setDescription(description)
     .setTimestamp();
 
-  if (estimatedMargin !== null && sampleCount !== null) {
+  // 💰 Price field
+  const priceLabel = isAuction ? `Current Bid: ${priceFmt} SEK` : `Price: ${priceFmt} SEK`;
+  embed.addFields({ name: '💰 Price', value: priceLabel, inline: false });
+
+  // 🔥 Below target — only shown when price is under max_price
+  if (threshold && threshold.max_price !== null && listing.price_sek < threshold.max_price) {
+    const savings = threshold.max_price - listing.price_sek;
+    const pct = ((savings / threshold.max_price) * 100).toFixed(1);
     embed.addFields({
-      name: 'Marginal',
-      value: `~${Math.round(estimatedMargin).toLocaleString('sv-SE')} SEK (${sampleCount} comps)`,
+      name: `🔥 ${pct}% below target`,
+      value: `${savings.toLocaleString('sv-SE')} SEK cheaper than max (${threshold.max_price.toLocaleString('sv-SE')} SEK)`,
+      inline: false,
+    });
+  }
+
+  // 🔍 Search Term
+  const searchTerm = threshold?.search_term || threshold?.name || '—';
+  embed.addFields({ name: '🔍 Search Term', value: searchTerm, inline: false });
+
+  // ⏱️ Time Left — auctions only
+  if (isAuction && listing.auctionEndsAt) {
+    const endMs = parseAuctionEnd(listing.auctionEndsAt);
+    if (endMs) {
+      const diffMs = endMs - Date.now();
+      const diffMins = Math.round(diffMs / 60000);
+      const timeStr = diffMins <= 0
+        ? 'Ending now'
+        : diffMins < 60
+          ? `${diffMins}m left`
+          : `${Math.floor(diffMins / 60)}h ${diffMins % 60}m left`;
+      embed.addFields({ name: '⏱️ Time Left', value: `${timeStr} (ends ${listing.auctionEndsAt})`, inline: false });
+    } else {
+      embed.addFields({ name: '⏱️ Time Left', value: listing.auctionEndsAt, inline: false });
+    }
+  }
+
+  // 📊 Margin — shown for both live comps and static estimates
+  if (estimatedMargin !== null) {
+    const { marginSource } = alert;
+    const sourceTag = marginSource === 'live'
+      ? `${sampleCount} sold comps`
+      : 'est. market price';
+    embed.addFields({
+      name: '📊 Est. Margin',
+      value: `~${Math.round(estimatedMargin).toLocaleString('sv-SE')} SEK (${sourceTag})`,
       inline: false,
     });
   }
@@ -87,7 +127,7 @@ async function sendStartupMessage(channel, db) {
   const row = db.prepare('SELECT COUNT(*) AS cnt FROM thresholds WHERE active = 1').get();
   const count = row ? row.cnt : 0;
   const interval = parseInt(process.env.SCAN_INTERVAL_MINUTES || '15', 10);
-  await channel.send(`Bot online — ${count} thresholds active, next scan in ${interval} min`);
+  await channel.send(`Bot online — ${count} active filters, next scan in ${interval} min`);
 }
 
 class AlertQueue {
@@ -119,9 +159,6 @@ class AlertQueue {
 }
 
 async function init(db) {
-  migrateAlertedAt(db);
-  migrateDismissed(db);
-
   const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
   await new Promise((resolve, reject) => {

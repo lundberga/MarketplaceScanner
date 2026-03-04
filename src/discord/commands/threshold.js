@@ -9,6 +9,7 @@ const logger = require('../../utils/logger');
 const ThresholdSetSchema = z.object({
   name:        z.string().min(1).max(100),
   max_price:   z.number().int().positive(),
+  min_price:   z.number().int().min(0).optional(),
   category:    z.enum(['gpu', 'cpu', 'ram', 'storage']).optional(),
   keywords:    z.string().optional(),
   min_margin:  z.number().min(0).max(1).optional(),
@@ -25,6 +26,7 @@ async function thresholdSet(interaction, db) {
   const raw = {
     name:        interaction.options.getString('name'),
     max_price:   interaction.options.getInteger('max_price'),
+    min_price:   interaction.options.getInteger('min_price') ?? undefined,
     category:    interaction.options.getString('category') ?? undefined,
     keywords:    interaction.options.getString('keywords') ?? undefined,
     min_margin:  interaction.options.getNumber('min_margin') ?? undefined,
@@ -43,21 +45,25 @@ async function thresholdSet(interaction, db) {
   // INSERT always — two rows with same name is acceptable (both stay active).
   // To update an existing threshold: /threshold remove <name> then /threshold set <name>.
   db.prepare(`
-    INSERT INTO thresholds (name, category, keywords, max_price, min_margin, marketplace, active, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, 1, ?)
+    INSERT INTO thresholds (name, category, keywords, min_price, max_price, min_margin, marketplace, active, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)
   `).run(
     data.name,
     data.category    ?? null,
     data.keywords    ?? null,
+    data.min_price   ?? null,
     data.max_price,
     data.min_margin  ?? null,
     data.marketplace ?? null,
     Math.floor(Date.now() / 1000)
   );
 
-  logger.info({ name: data.name, max_price: data.max_price }, 'threshold set via Discord command');
+  logger.info({ name: data.name, min_price: data.min_price, max_price: data.max_price }, 'threshold set via Discord command');
+  const priceRange = data.min_price
+    ? `${data.min_price}–${data.max_price} SEK`
+    : `max ${data.max_price} SEK`;
   return interaction.reply({
-    content: `Threshold \`${data.name}\` set (max ${data.max_price} SEK).`,
+    content: `Threshold \`${data.name}\` set (${priceRange}).`,
     flags: MessageFlags.Ephemeral,
   });
 }
@@ -95,7 +101,8 @@ async function thresholdList(interaction, db) {
   }
 
   const lines = rows.map(r => {
-    let line = `[${r.id}] ${r.name} — max ${r.max_price} SEK`;
+    const priceRange = r.min_price ? `${r.min_price}–${r.max_price} SEK` : `max ${r.max_price} SEK`;
+    let line = `[${r.id}] ${r.name} — ${priceRange}`;
     if (r.category)    line += ` | cat:${r.category}`;
     if (r.marketplace) line += ` | mkt:${r.marketplace}`;
     if (r.keywords)    line += ` | kw:${r.keywords}`;

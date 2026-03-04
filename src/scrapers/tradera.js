@@ -33,7 +33,7 @@ class TraderaScraper {
   }
 
   async _fetchKeyword(keyword) {
-    const url = `${SEARCH_URL}?q=${encodeURIComponent(keyword)}&itemStatus=Active`;
+    const url = `${SEARCH_URL}?q=${encodeURIComponent(keyword)}&itemStatus=Active&sortBy=AddedOn&sortOrder=Descending`;
     let html;
     try {
       const res = await fetch(url, {
@@ -58,59 +58,47 @@ class TraderaScraper {
   _parse(html, keyword) {
     const $ = cheerio.load(html);
     const listings = [];
-    const seenIds = new Set(); // deduplicate within this page (same anchor appears for image + title)
 
-    $('a[href*="/item/"]').each((_, el) => {
-      const href = $(el).attr('href');
-      const idMatch = href && href.match(/\/item\/\d+\/(\d+)/);
-      if (!idMatch) return;
+    // Tradera now renders individual item cards as div[id="item-card-{listingId}"]
+    // with data-item-type, a dedicated price element (#item-card-{id}-price),
+    // and a time element (#item-card-{id}-time).
+    $('div[id^="item-card-"]').each((_, el) => {
+      const card = $(el);
+      const cardId = card.attr('id');
 
-      const listingId = idMatch[1];
+      // Only main cards — skip sub-elements like item-card-{id}-price / -time / -badge
+      if (!/^item-card-\d+$/.test(cardId)) return;
 
+      const listingId = cardId.replace('item-card-', '');
+
+      // Title from the image anchor's title attribute (most reliable)
+      const title = card.find('a[title]').first().attr('title')?.trim().substring(0, 250);
+      if (!title) return;
+
+      const href = card.find('a[href*="/item/"]').first().attr('href');
+      if (!href) return;
       const fullUrl = href.startsWith('http') ? href : `${BASE_URL}${href}`;
-      const text = $(el).text().replace(/\s+/g, ' ').trim();
 
-      // Guard: skip non-listing anchors and empty-text image anchors (no price text)
-      if (!text.includes('kr')) return;
+      // Listing type from data-item-type ("Auction" vs everything else = buy_now)
+      const listingType = card.attr('data-item-type') === 'Auction' ? 'auction' : 'buy_now';
 
-      // Deduplicate after text check — image anchors (empty text) must not consume the ID slot
-      if (seenIds.has(listingId)) return;
-      seenIds.add(listingId);
+      // Price from dedicated price element: "Pris:349 kr,Köp nu." etc.
+      const priceText = $(`#item-card-${listingId}-price`).text().replace(/\s+/g, ' ');
+      const price_sek = parsePrice(priceText);
+      if (price_sek === null) return;
 
-      // Extract title: prefer h3 or title-class element; fall back to text before price
-      const title = (
-        $(el).find('h3').first().text().trim() ||
-        $(el).find('[class*="title"]').first().text().trim() ||
-        text.split(/\d+\s*kr/)[0].trim().substring(0, 250)
-      ).substring(0, 250);
-
-      // Determine listing type
-      // "Ledande bud" = active bid (auction), "Eller Köp nu" = auction with buy-now option
-      let listingType = 'buy_now';
-      if (text.includes('Ledande bud') || text.includes('Eller Köp nu')) {
-        listingType = 'auction';
-      }
-
-      // Extract price — for "Eller Köp nu" use the buy-now price (second price in text)
-      let priceSource = text;
-      if (text.includes('Eller Köp nu')) {
-        const buyNowMatch = text.match(/Eller K[öo]p nu\s+([\d\s]+)\s*kr/i);
-        if (buyNowMatch) priceSource = buyNowMatch[1] + ' kr';
-      }
-      const price_sek = parsePrice(priceSource);
-      if (price_sek === null) return; // skip if price unparseable
-
-      // Auction end time — store raw Swedish string, Phase 6 will parse it
+      // Auction end time from dedicated time element: "Sluttid7 mar 09:19."
       let auctionEndsAt = null;
-      const sluttidMatch = text.match(/Sluttid\s*(\d+\s+\w+\s+\d+:\d+)/);
-      if (sluttidMatch) {
-        auctionEndsAt = sluttidMatch[1];
+      if (listingType === 'auction') {
+        const timeText = $(`#item-card-${listingId}-time`).text().replace(/\s+/g, ' ');
+        const sluttidMatch = timeText.match(/Sluttid\s*(\d{1,2}\s+\w+\s+\d{2}:\d{2})/);
+        if (sluttidMatch) auctionEndsAt = sluttidMatch[1];
       }
 
       listings.push({
         id: `tradera:${listingId}`,
         marketplace: 'tradera',
-        title: title || `tradera-${listingId}`,
+        title,
         price_sek,
         url: fullUrl,
         category: classifyCategory(keyword),

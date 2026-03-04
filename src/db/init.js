@@ -11,6 +11,44 @@ const logger = require('../utils/logger');
 // Absolute path — survives CWD changes and pm2 working directory differences
 const DB_PATH = path.resolve(__dirname, '../../data/scanner.db');
 
+const MIGRATIONS = [
+  { v: 1, sql: 'ALTER TABLE seen_listings ADD COLUMN alerted_at INTEGER' },
+  { v: 2, sql: 'ALTER TABLE seen_listings ADD COLUMN dismissed INTEGER DEFAULT 0' },
+  { v: 3, sql: 'ALTER TABLE thresholds ADD COLUMN min_price INTEGER' },
+  { v: 4, fn: db => {
+    db.exec('ALTER TABLE thresholds ADD COLUMN search_term TEXT');
+    db.exec(`UPDATE thresholds SET search_term = TRIM(
+      CASE WHEN INSTR(COALESCE(keywords,''), ',') > 0
+        THEN SUBSTR(keywords, 1, INSTR(keywords, ',')-1)
+        ELSE COALESCE(keywords, name)
+      END
+    ) WHERE search_term IS NULL`);
+  }},
+  { v: 5, sql: 'ALTER TABLE seen_listings ADD COLUMN url TEXT' },
+];
+
+function runMigrations(db) {
+  db.exec('CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY)');
+  const applied = new Set(
+    db.prepare('SELECT version FROM schema_migrations').all().map(r => r.version)
+  );
+  for (const m of MIGRATIONS) {
+    if (applied.has(m.v)) continue;
+    try {
+      if (m.fn) m.fn(db); else db.exec(m.sql);
+    } catch (err) {
+      // Column already exists from a prior manual migration — mark as applied and continue
+      if (err.message && err.message.includes('duplicate column name')) {
+        logger.info({ version: m.v }, 'Migration already applied (column exists) — recording version');
+      } else {
+        throw err;
+      }
+    }
+    db.prepare('INSERT INTO schema_migrations (version) VALUES (?)').run(m.v);
+    logger.info({ version: m.v }, 'Migration applied');
+  }
+}
+
 function initDb() {
   // Create data/ directory if it does not exist — better-sqlite3 will not create parent dirs
   fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
@@ -32,6 +70,12 @@ function initDb() {
 
     CREATE INDEX IF NOT EXISTS idx_seen_marketplace
       ON seen_listings(marketplace);
+
+    CREATE INDEX IF NOT EXISTS idx_seen_first_seen
+      ON seen_listings(first_seen DESC);
+
+    CREATE INDEX IF NOT EXISTS idx_seen_marketplace_price
+      ON seen_listings(marketplace, price_sek);
 
     CREATE TABLE IF NOT EXISTS thresholds (
       id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -72,6 +116,8 @@ function initDb() {
   // Verify WAL mode is active
   const journalMode = db.pragma('journal_mode', { simple: true });
   logger.info({ db_path: DB_PATH, journal_mode: journalMode }, 'Database initialized');
+
+  runMigrations(db);
 
   return db;
 }

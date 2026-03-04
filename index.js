@@ -14,11 +14,6 @@ const commandHandler = require('./src/discord/commandHandler');
 
 // --- Configuration ---
 
-const KEYWORDS = (process.env.KEYWORDS || 'rtx 3080,rtx 3090,rtx 4080,rx 6800')
-  .split(',')
-  .map(k => k.trim())
-  .filter(Boolean);
-
 const INTERVAL = parseInt(process.env.SCAN_INTERVAL_MINUTES || '15', 10);
 
 // --- Scraper registry ---
@@ -33,13 +28,28 @@ const scrapers = [
 // --- Startup (async: Discord must be ready before first cron tick) ---
 
 (async () => {
-  logger.info({ keywords: KEYWORDS, interval_minutes: INTERVAL, scrapers: scrapers.map(s => s.name) }, 'Scanner starting');
+  logger.info({ interval_minutes: INTERVAL, scrapers: scrapers.map(s => s.name) }, 'Scanner starting');
 
   // Init Discord — blocks until client is ready and channel is fetched
   const discord = await alertSender.init(db);
   await discord.sendStartupMessage();
+
+  let cycleRunning = false;
+  async function safeCycle() {
+    if (cycleRunning) {
+      logger.warn('safeCycle: overlap prevented — previous cycle still running');
+      return;
+    }
+    cycleRunning = true;
+    try {
+      await runCycle(scrapers, db, discord);
+    } finally {
+      cycleRunning = false;
+    }
+  }
+
   // Wire Discord slash command handler — interacts via discord.client
-  await commandHandler.init(discord.client, db);
+  await commandHandler.init(discord.client, db, { safeCycle });
 
   // Validate cron expression before scheduling — catches out-of-range SCAN_INTERVAL_MINUTES values
   // (e.g. 60 produces */60 * * * * which is invalid: minute field is 0-59)
@@ -53,7 +63,7 @@ const scrapers = [
   // --- Schedule ---
 
   const task = cron.schedule(safeExpression, async () => {
-    await runCycle(scrapers, KEYWORDS, db, discord);
+    await safeCycle();
   }, {
     noOverlap: true,   // skip tick if previous cycle still running — overlap prevention via node-cron
     name: 'scanner',

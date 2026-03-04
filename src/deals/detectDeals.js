@@ -2,37 +2,66 @@
 
 const { lookupSoldPrice: _lookupSoldPrice } = require('../scrapers/soldCache');
 const { passesAuctionFilter } = require('../utils/parseAuctionEnd');
+const { lookupStaticPrice } = require('../data/marketPrices');
 const logger = require('../utils/logger');
 
 function loadThresholds(db) {
   return db.prepare(
-    'SELECT id, name, category, keywords, max_price, min_margin, marketplace FROM thresholds WHERE active = 1'
+    'SELECT id, name, keywords, search_term, min_price, max_price, min_margin, marketplace FROM thresholds WHERE active = 1'
   ).all();
 }
 
+/**
+ * Returns true if every word in `searchTerm` appears as a standalone token in `title`.
+ * Handles "Ryzen 7 7800X3D" matching search "ryzen 7800x3d" (space before model number).
+ * Prevents partial matches like "ti" inside "gigabyte" or "3080" inside "13080".
+ * Case-insensitive.
+ */
+function allWordsPresent(title, searchTerm) {
+  const titleLower = title.toLowerCase();
+  const words = searchTerm.toLowerCase().split(/\s+/).filter(Boolean);
+  return words.every(w => {
+    const escaped = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Word must be preceded and followed by a non-alphanumeric character (or string boundary)
+    return new RegExp(`(?:^|[^a-z0-9])${escaped}(?:[^a-z0-9]|$)`).test(titleLower);
+  });
+}
+
 function matchesThreshold(listing, threshold) {
-  // 1. Category (NULL = wildcard)
-  if (threshold.category !== null && threshold.category !== listing.category) return false;
-  // 2. Price (NULL = no limit)
+  // 1. Price range (NULL = no limit)
+  if (threshold.min_price !== null && listing.price_sek < threshold.min_price) return false;
   if (threshold.max_price !== null && listing.price_sek > threshold.max_price) return false;
-  // 3. Keywords — comma-separated TEXT, never a JS array
+  // 2. Title check — every word must appear as a standalone token in the title
   if (threshold.keywords) {
-    const kws = threshold.keywords.split(',').map(k => k.trim().toLowerCase()).filter(Boolean);
-    if (kws.length > 0 && !kws.some(kw => listing.title.toLowerCase().includes(kw))) return false;
+    const kws = threshold.keywords.split(',').map(k => k.trim()).filter(Boolean);
+    if (kws.length > 0 && !kws.some(kw => allWordsPresent(listing.title, kw))) return false;
+  } else if (threshold.search_term) {
+    if (!allWordsPresent(listing.title, threshold.search_term)) return false;
   }
-  // 4. Marketplace (NULL = any)
+  // 3. Marketplace (NULL = any)
   if (threshold.marketplace !== null && threshold.marketplace !== listing.marketplace) return false;
   return true;
 }
 
 async function buildAlert(listing, threshold, lookupFn) {
-  // Sold-comps query key: threshold keywords first entry, else first 3 words of title
-  const firstKeyword = threshold.keywords
-    ? threshold.keywords.split(',')[0].trim().toLowerCase()
-    : null;
-  const queryKey = firstKeyword || listing.title.toLowerCase().trim().split(/\s+/).slice(0, 3).join(' ');
+  // Sold-comps query key: keywords first entry, then search_term, then first 3 title words
+  const queryKey =
+    threshold.keywords?.split(',')[0].trim().toLowerCase() ||
+    threshold.search_term?.toLowerCase() ||
+    listing.title.toLowerCase().trim().split(/\s+/).slice(0, 3).join(' ');
 
-  const { medianPrice, sampleCount } = await lookupFn(queryKey);
+  const { medianPrice: livePrice, sampleCount } = await lookupFn(queryKey);
+
+  // Fall back to static research prices when Tradera sold-comps has insufficient data
+  let medianPrice = livePrice;
+  let marginSource = livePrice !== null ? 'live' : null;
+  if (livePrice === null) {
+    const staticPrice = lookupStaticPrice(queryKey);
+    if (staticPrice !== null) {
+      medianPrice = staticPrice;
+      marginSource = 'static';
+    }
+  }
 
   const estimatedMargin = medianPrice !== null ? medianPrice - listing.price_sek : null;
 
@@ -49,10 +78,12 @@ async function buildAlert(listing, threshold, lookupFn) {
       name: threshold.name,
       max_price: threshold.max_price,
       min_margin: threshold.min_margin,
+      search_term: threshold.search_term,
     },
     estimatedMargin,
     sampleCount,
     medianSoldPrice: medianPrice,
+    marginSource,
   };
 }
 
