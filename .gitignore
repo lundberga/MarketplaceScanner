@@ -2,7 +2,8 @@
 .env
 
 # Database
-data/
+data/*
+!data/marketPrices.js
 *.db
 
 # Dependencies
