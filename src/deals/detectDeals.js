@@ -2,7 +2,7 @@
 
 const { lookupSoldPrice: _lookupSoldPrice } = require('../scrapers/soldCache');
 const { passesAuctionFilter } = require('../utils/parseAuctionEnd');
-const { lookupStaticPrice } = require('../data/marketPrices');
+const { lookupStaticPrice } = require('../../data/marketPrices');
 const logger = require('../utils/logger');
 
 function loadThresholds(db) {
